@@ -30,9 +30,9 @@ void set_value(char *file, char *numb)
 
 int main()
 {
-    FILE *fm, *fp;
+    FILE *fm;
     char battery[4];
-    int power, current, full=0;
+    int power;
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
@@ -40,41 +40,15 @@ int main()
         if(fm != NULL)
         {
             fscanf(fm, "%d", &power);
-            if(power == 10000)
-            {
-                if(! full)
-                {
-                    fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
-                    if(fp != NULL)
-                    {
-                        fscanf(fp, "%d", &current);
-                        full = (current)?0:1;
-                        fclose(fp);
-                        fp = NULL;
-                    }
-                    else
-                    {
-                        printf("无法读取电流！\n");
-                        exit(1);
-                    }
-                    (full)?sprintf(battery, "100"):sprintf(battery, "99");
-                }
-                else
-                    sprintf(battery, "100");
-            }
+            power += 50;
+            if(power>9999)
+                sprintf(battery, "100");
+            else if(power>999)
+                snprintf(battery, 3, "%d", power);
+            else if(power>99)
+                snprintf(battery, 2, "%d", power);
             else
-            {
-                power += 50;
-                full = 0;
-                if(power > 9999)
-                    sprintf(battery, "99");
-                else if(power > 999)
-                    snprintf(battery, 3, "%d", power);
-                else if(power > 99)
-                    snprintf(battery, 2, "%d", power);
-                else
-                    sprintf(battery, "0");
-            }
+                sprintf(battery, "0");
             set_value("/sys/class/power_supply/battery/capacity", battery);
             set_value("/sys/class/power_supply/bms/capacity", battery);
             fclose(fm);

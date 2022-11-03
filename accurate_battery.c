@@ -47,7 +47,6 @@ int main()
                 sprintf(battery, "0");
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
-            set_value("/sys/class/power_supply/bms/capacity", battery);
             fclose(fm);
             fm = NULL;
         }

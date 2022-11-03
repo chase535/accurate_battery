@@ -40,7 +40,8 @@ int main()
         if(fm != NULL)
         {
             fscanf(fm, "%d", &power);
-            if(power == 10000)
+            power += 50;
+            if(power > 9999)
             {
                 if(! full)
                 {
@@ -64,11 +65,8 @@ int main()
             }
             else
             {
-                power += 50;
                 full = 0;
-                if(power > 9999)
-                    sprintf(battery, "100");
-                else if(power > 999)
+                if(power > 999)
                     snprintf(battery, 3, "%d", power);
                 else if(power > 99)
                     snprintf(battery, 2, "%d", power);

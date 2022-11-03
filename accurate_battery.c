@@ -31,8 +31,8 @@ void set_value(char *file, char *numb)
 int main()
 {
     FILE *fm, *fp;
-    char battery[4];
-    int power, current, full=0;
+    char battery[4], status[20];
+    int power, full=0;
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
@@ -45,11 +45,11 @@ int main()
             {
                 if(! full)
                 {
-                    fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
+                    fp = fopen("/sys/class/power_supply/bms/status", "rt");
                     if(fp != NULL)
                     {
-                        fscanf(fp, "%d", &current);
-                        full = (current)?0:1;
+                        fscanf(fp, "%s", status);
+                        full = (status == "Charging")?0:1;
                         fclose(fp);
                         fp = NULL;
                     }

@@ -59,7 +59,8 @@ int main()
                     }
                     (full)?sprintf(battery, "100"):sprintf(battery, "99");
                 }
-                else sprintf(battery, "100");
+                else
+                    sprintf(battery, "100");
             }
             else
             {

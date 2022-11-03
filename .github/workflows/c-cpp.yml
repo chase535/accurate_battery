@@ -28,5 +28,5 @@ jobs:
         cc: 1
         # On Cygwin, replace executable symlinks with hardlinks
         hardlinks: 0
-    - name: compile
-      run: gcc -o ./accurate_battery --static ./accurate_battery.c
+    - name: Compile
+      run: gcc -o ./accurate_battery --static

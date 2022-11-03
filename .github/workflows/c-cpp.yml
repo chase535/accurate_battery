@@ -29,12 +29,12 @@ jobs:
         # On Cygwin, replace executable symlinks with hardlinks
         hardlinks: 0
     - name: Compile
-      run: gcc --static ./accurate_battery.c
+      run: gcc -o ${{ github.workspace }}/accurate_battery --static ${{ github.workspace }}/accurate_battery.c
     - name: ls
       run: ls ${{ github.workspace }}
     - name : upload
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: xupdate_apk
-        path: ${{ github.workspace }}/app/build/outputs/apk/release
+        name: accurate_battery
+        path: ${{ github.workspace }}/accurate_battery

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -14,6 +15,16 @@ void set_value(char *file, char *numb)
             fclose(fn);
             fn = NULL;
         }
+        else
+        {
+            printf("无法读取%s文件！\n", file);
+            exit(3);
+        }
+    }
+    else
+    {
+        printf("无法向%s文件写入数据！\n", file);
+        exit(4);
     }
 }
 
@@ -31,27 +42,24 @@ int main()
             fscanf(fm, "%d", &power);
             power += 50;
             if(power>9999)
-            {
                 sprintf(battery, "100");
-            }
             else if(power>999)
-            {
                 snprintf(battery, 3, "%d", power);
-            }
             else if(power>99)
-            {
                 snprintf(battery, 2, "%d", power);
-            }
             else
-            {
                 sprintf(battery, "0");
-            }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             set_value("/sys/class/power_supply/bms/capacity", battery);
             fclose(fm);
             fm = NULL;
         }
-        sleep(15);
+        else
+        {
+            printf("无法读取电量！\n");
+            exit(2);
+        }
+        sleep(1);
     }
     return 0;
 }

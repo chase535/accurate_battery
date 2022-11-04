@@ -46,4 +46,3 @@ jobs:
         name: accurate_battery
         path:
           ${{ github.workspace }}/module/*
-          ${{ github.workspace }}/module_no_trickle/*

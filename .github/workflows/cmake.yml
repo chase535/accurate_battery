@@ -35,7 +35,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
     - name: ls
-      run: ls ${{ github.workspace }}
+      run: ls /home/runner/work/accurate_battery/accurate_battery/build
     - name : upload
       uses: actions/upload-artifact@master
       if: always()

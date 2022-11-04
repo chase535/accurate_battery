@@ -27,7 +27,10 @@ jobs:
 
     - name: Build
       # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run:  apt-get install gcc-aarch64-linux-gnu
+        cd ./build
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=/path/to/toochain.cmake
+        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Test
       working-directory: ${{github.workspace}}/build

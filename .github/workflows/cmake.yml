@@ -41,7 +41,10 @@ jobs:
     - name: Build
       run:
         export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc -static";
-        ls ${{github.workspace}}/musl-1.2.3/include/bits;
+        ls ${{github.workspace}}/musl-1.2.3/arch/aarch64/bits;
+        ls ${{github.workspace}}/musl-1.2.3/arch/arm/bits;
+        ls ${{github.workspace}}/musl-1.2.3/arch/i386/bits;
+        ls ${{github.workspace}}/musl-1.2.3/arch/x86_64/bits;
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:

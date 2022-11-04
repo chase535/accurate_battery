@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Download and unzip aarch64-none-linux-gnu
       run:
-        wget https://publishing-ie-linaro-org.s3.amazonaws.com/snapshots/gnu-toolchain/13.0-2022.10-1/aarch64-linux-gnu/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz;
+        wget https://snapshots.linaro.org/gnu-toolchain/13.0-2022.10-1/aarch64-linux-gnu/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz;
         tar -xvf gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz -C ${{github.workspace}};
         export PATH=$PATH:${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/aarch64-linux-gnu/bin:${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin
         ls ${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu

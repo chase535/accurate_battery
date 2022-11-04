@@ -37,7 +37,7 @@ jobs:
       run:
         file ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
         mkdir -p ${{github.workspace}}/build;
-        export CC="${{github.workspace}}/musl-1.2.3/objmusl-gcc";
+        export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}

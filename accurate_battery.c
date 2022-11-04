@@ -32,7 +32,7 @@ int main()
 {
     FILE *fm, *fp;
     char battery[4], status[20];
-    int power[6], full;
+    int power[6], full[1];
     *full = 0;
     while(1)
     {
@@ -46,7 +46,7 @@ int main()
             *power += 50;
             if(*power > 9999)
             {
-                if(! full)
+                if(! *full)
                 {
                     fp = fopen("/sys/class/power_supply/bms/status", "rt");
                     if(fp != NULL)
@@ -61,14 +61,14 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    *battery = (full)?100:99;
+                    *battery = (*full)?100:99;
                 }
                 else
                     *battery = 100;
             }
             else
             {
-                full = 0;
+                *full = 0;
                 if(*power > 999)
                     snprintf(battery, 3, "%d", *power);
                 else if(*power > 99)

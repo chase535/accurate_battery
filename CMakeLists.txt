@@ -12,6 +12,7 @@ set(CC "${CMAKE_CURRENT_SOURCE_DIR}/musl-1.2.3/obj/musl-gcc")
 
 # 交叉编译器
 set(CMAKE_C_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc")
+set(CMAKE_CXX_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-c++")
 
 # 静态编译
 set(CMAKE_EXE_LINKER_FLAGS "-static")

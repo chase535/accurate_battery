@@ -3,7 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 void set_value(char *file, char *numb)
 {
     FILE *fn;

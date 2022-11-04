@@ -21,11 +21,11 @@ jobs:
     - uses: actions/checkout@v3
     - name: Download and unzip musl libc
       run:
-        wget http://musl.libc.org/releases/musl-1.2.2.tar.gz;
-        tar -xvf musl-1.2.2.tar.gz -C ${{github.workspace}}
+        wget http://musl.libc.org/releases/musl-1.2.3.tar.gz;
+        tar -xvf musl-1.2.3.tar.gz -C ${{github.workspace}}
     - name: Build musl libc
       run:
-        cd ${{github.workspace}}/musl-1.2.2;
+        cd ${{github.workspace}}/musl-1.2.3;
         mkdir -p ${{github.workspace}}/musl;
         ./configure --prefix=${{github.workspace}}/musl && make target=aarch64 install
     - name: Download and unzip aarch64-none-linux-gnu

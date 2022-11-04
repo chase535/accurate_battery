@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 void set_value(char *file, char *numb)
 {
     FILE *fn;
@@ -32,24 +33,27 @@ int main()
 {
     FILE *fm, *fp;
     char battery[4], status[20];
-    int power, full=0;
+    int power[6], full[1];
+    *full = 0;
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
+        memset(status, '\0', sizeof(status));
+        memset(power, '0', sizeof(power));
         fm = fopen("/sys/class/power_supply/bms/capacity_raw", "rt");
         if(fm != NULL)
         {
-            fscanf(fm, "%d", &power);
-            power += 50;
-            if(power > 9999)
+            fscanf(fm, "%d", power);
+            *power += 50;
+            if(*power > 9999)
             {
-                if(! full)
+                if(! *full)
                 {
                     fp = fopen("/sys/class/power_supply/bms/status", "rt");
                     if(fp != NULL)
                     {
                         fscanf(fp, "%s", status);
-                        full = (status == "Charging")?0:1;
+                        *full = (strcmp(status, "Charging") == 0)?0:1;
                         fclose(fp);
                         fp = NULL;
                     }
@@ -58,23 +62,22 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    (full)?sprintf(battery, "100"):sprintf(battery, "99");
+                    *battery = (*full)?100:99;
                 }
                 else
-                    sprintf(battery, "100");
+                    *battery = 100;
             }
             else
             {
-                full = 0;
-                if(power > 999)
-                    snprintf(battery, 3, "%d", power);
-                else if(power > 99)
-                    snprintf(battery, 2, "%d", power);
+                *full = 0;
+                if(*power > 999)
+                    snprintf(battery, 3, "%d", *power);
+                else if(*power > 99)
+                    snprintf(battery, 2, "%d", *power);
                 else
-                    sprintf(battery, "0");
+                    *battery = 0;
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
-            set_value("/sys/class/power_supply/bms/capacity", battery);
             fclose(fm);
             fm = NULL;
         }

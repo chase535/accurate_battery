@@ -35,14 +35,15 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
-      run: cp -af ${{ github.workspace }}/module ${{ github.workspace }}/module_no_trickle;
-        cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common/accurate_battery;
+      run:
+        cp -af ${{ github.workspace }}/module ${{ github.workspace }}/module_no_trickle
+        cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common/accurate_battery
         cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/module_no_trickle/common/accurate_battery_no_trickle
     - name : Zip modules and upload
       uses: actions/upload-artifact@master
       if: always()
       with:
         name: accurate_battery
-        path: |
+        path:
           ${{ github.workspace }}/module/*
           ${{ github.workspace }}/module_no_trickle/*

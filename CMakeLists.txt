@@ -9,9 +9,6 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_SYSTEM_NAME "Linux")
 set(CMAKE_SYSTEM_PROCESSOR "aarch64")
 
-# 交叉编译器
-set(CMAKE_C_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc")
-set(CMAKE_CXX_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-c++")
 
 # 静态编译
 

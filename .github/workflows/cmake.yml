@@ -39,7 +39,7 @@ jobs:
         cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common/accurate_battery;
         cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/module_no_trickle/common/accurate_battery_no_trickle
     - name: Zip modules
-      run: zip ${{ github.workspace }}/accurate_battery.zip ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module;
+      run: zip ${{ github.workspace }}/accurate_battery.zip ${{ github.workspace }}/module;
         ls ${{ github.workspace }}
       
       
@@ -48,4 +48,4 @@ jobs:
       if: always()
       with:
         name: accurate_battery
-        path: ${{ github.workspace }}/accurate_battery.zip
+        path: ${{ github.workspace }}/module/*

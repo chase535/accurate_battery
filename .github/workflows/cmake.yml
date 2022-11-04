@@ -33,8 +33,6 @@ jobs:
     - name: Build
       run: cd ./build
     - name: Build
-      run: cmake -DCMAKE_TOOLCHAIN_FILE=/path/to/toochain.cmake ${{ github.workspace }}
-    - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
     - name: Test

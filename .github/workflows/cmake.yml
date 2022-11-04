@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Download gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu
+    - name: Download gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.gz
       run: wget https://developer.arm.com/-/media/Files/downloads/gnu-a/10.3-2021.07/binrel/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.xz
     - name: Unzip gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.gz
       run: tar -xvf gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu.tar.xz
@@ -34,6 +34,15 @@ jobs:
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
+    - name: Copy files into modules directory
+      run: cp -af ${{ github.workspace }}/module ${{ github.workspace }}/module_no_trickle;
+        cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common/accurate_battery;
+        cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/module_no_trickle/common/accurate_battery_no_trickle
+    - name: Zip modules
+      run: zip ${{ github.workspace }}/accurate_battery.zip ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module;
+        ls ${{ github.workspace }}
+      
+      
     - name : Upload
       uses: actions/upload-artifact@master
       if: always()

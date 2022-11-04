@@ -33,7 +33,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:
-        ldd ${{ github.workspace }}/build/accurate_battery;
+        file ${{ github.workspace }}/build/accurate_battery;
         cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/modules/accurate_battery/common/accurate_battery;
         cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/modules/accurate_battery_no_trickle/common/accurate_battery_no_trickle
     - name : Zip accurate_battery and upload

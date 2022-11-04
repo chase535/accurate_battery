@@ -41,4 +41,4 @@ jobs:
       if: always()
       with:
         name: accurate_battery
-        path: ${{ github.workspace }}/accurate_battery
+        path: ${{ github.workspace }}/build/accurate_battery

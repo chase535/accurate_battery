@@ -33,18 +33,17 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:
-        cp -af ${{ github.workspace }}/module ${{ github.workspace }}/module_no_trickle;
-        cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common/accurate_battery;
-        cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/module_no_trickle/common/accurate_battery_no_trickle
+        cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/modules/accurate_battery/common/accurate_battery;
+        cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/modules/accurate_battery_no_trickle/common/accurate_battery_no_trickle
     - name : Zip accurate_battery and upload
       uses: actions/upload-artifact@master
       if: always()
       with:
         name: accurate_battery
-        path: ${{ github.workspace }}/module/*
+        path: ${{ github.workspace }}/modules/accurate_battery/*
     - name : Zip accurate_battery_no_trickle and upload
       uses: actions/upload-artifact@master
       if: always()
       with:
         name: accurate_battery_no_trickle
-        path: ${{ github.workspace }}/module_no_trickle/*
+        path: ${{ github.workspace }}/modules/accurate_battery_no_trickle/*

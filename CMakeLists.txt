@@ -14,7 +14,6 @@ set(CMAKE_C_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_
 set(CMAKE_CXX_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-c++")
 
 # 静态编译
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 # 指定生成目标
 file(GLOB_RECURSE ALL_SRCS "accurate_battery*.c")

@@ -37,7 +37,7 @@ jobs:
       run:
         mkdir -p ${{github.workspace}}/build;
         sed -i '2d' ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
-        sed -i '2i\exec "${REALGCC:-gcc}" "$@" -specs "/usr/local/musl/lib/musl-gcc.specs"' ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
+        echo 'exec "${REALGCC:-gcc}" "$@" -specs "/usr/local/musl/lib/musl-gcc.specs"' >> ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
         export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";
         cat ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}

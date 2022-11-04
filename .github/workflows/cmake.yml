@@ -34,7 +34,7 @@ jobs:
     - name: Copy files into modules directory
       run:
         file ${{ github.workspace }}/build/accurate_battery;
-        ls /lib;
+        ldd ${{github.workspace}}/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc/lib64/ld-2.33.so
         cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/modules/accurate_battery/common/accurate_battery;
         cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/modules/accurate_battery_no_trickle/common/accurate_battery_no_trickle
     - name : Zip accurate_battery and upload

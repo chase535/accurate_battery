@@ -42,12 +42,13 @@ jobs:
       run:
         export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";
         cmake -DCMAKE_EXE_LINKER_FLAGS="-static -Os";
-        make DESTDIR=${{ github.workspace }};
-        ls ${{ github.workspace }}
+        mkdir -p DESTDIR=${{ github.workspace }}/output
+        make DESTDIR=${{ github.workspace }}/output;
+        ls ${{ github.workspace }}/output
     - name: Copy files into modules directory
       run:
-        cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/modules/accurate_battery/common/accurate_battery;
-        cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/modules/accurate_battery_no_trickle/common/accurate_battery_no_trickle
+        cp -af ${{ github.workspace }}/output/accurate_battery ${{ github.workspace }}/modules/accurate_battery/common/accurate_battery;
+        cp -af ${{ github.workspace }}/output/accurate_battery_no_trickle ${{ github.workspace }}/modules/accurate_battery_no_trickle/common/accurate_battery_no_trickle
     - name : Zip accurate_battery and upload
       uses: actions/upload-artifact@master
       if: always()

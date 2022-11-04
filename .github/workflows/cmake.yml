@@ -31,7 +31,7 @@ jobs:
       run:
         cd ${{github.workspace}}/musl-1.2.3;
         mkdir -p ${{github.workspace}}/musl;
-        ./configure --prefix=${{github.workspace}}/musl aarch64 && make target=aarch64 && make install
+        ./configure --prefix=${{github.workspace}}/musl aarch64 && echo '' && make target=aarch64 && echo '' && make install
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type

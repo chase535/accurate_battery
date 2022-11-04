@@ -28,7 +28,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run:
         mkdir -p ${{github.workspace}}/build;
-        export PATH=$PATH:${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/aarch64-linux-gnu/bin:${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin
+        export PATH=$PATH:${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/aarch64-linux-gnu/bin:${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin;
         echo $PATH;
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build

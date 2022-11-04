@@ -40,6 +40,7 @@ jobs:
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run:
+        ls ${{github.workspace}}/musl-1.2.3/include;
         cp -af ${{github.workspace}}/musl-1.2.3/arch/aarch64/bits ${{github.workspace}}/musl-1.2.3/include/bits;
         cp -af ${{github.workspace}}/musl-1.2.3/include/alltypes.h.in ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h.in;
         cp -af ${{github.workspace}}/musl-1.2.3/include/syscall.h.in ${{github.workspace}}/musl-1.2.3/include/bits/syscall.h.in;

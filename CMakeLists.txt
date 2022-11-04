@@ -11,8 +11,8 @@ set(CMAKE_SYSTEM_PROCESSOR aarch64)
 # 交叉编译器
 set(CMAKE_C_COMPILER /home/runner/work/accurate_battery/accurate_battery/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-gcc)
 
-# 全静态编译
-set(CMAKE_EXE_LINKER_FLAGS "-static")
+# 静态编译
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc")
 
 # 指定生成目标
 file(GLOB_RECURSE ALL_SRCS "accurate_battery*.c")

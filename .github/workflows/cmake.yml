@@ -22,11 +22,11 @@ jobs:
       run:
         wget https://snapshots.linaro.org/gnu-toolchain/13.0-2022.10-1/aarch64-linux-gnu/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz;
         tar -xvf gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz -C ${{github.workspace}}
-    - name: Download and unzip musl libc
+    - name: Download and unzip musl
       run:
         wget http://musl.libc.org/releases/musl-1.2.3.tar.gz;
         tar -xvf musl-1.2.3.tar.gz -C ${{github.workspace}}
-    - name: Build musl libc
+    - name: Build musl
       run:
         cd ${{github.workspace}}/musl-1.2.3;
         mkdir -p ${{github.workspace}}/musl;
@@ -39,13 +39,12 @@ jobs:
         mkdir -p ${{github.workspace}}/build;
         export CC="${{github.workspace}}/musl/bin/musl-gcc";
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-    - name: Build
+    - name: Build accurate_battery and accurate_battery_no_trickle
       run:
         export CC="${{github.workspace}}/musl/bin/musl-gcc";
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:
-        cat ${{github.workspace}}/musl/bin/musl-gcc;
         cp -af ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/modules/accurate_battery/common/accurate_battery;
         cp -af ${{ github.workspace }}/build/accurate_battery_no_trickle ${{ github.workspace }}/modules/accurate_battery_no_trickle/common/accurate_battery_no_trickle
     - name : Zip accurate_battery and upload

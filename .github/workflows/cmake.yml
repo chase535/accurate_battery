@@ -43,11 +43,11 @@ jobs:
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: accurate_battery.zip
+        name: accurate_battery
         path: ${{ github.workspace }}/module/*
     - name : Zip accurate_battery_no_trickle and upload
       uses: actions/upload-artifact@master
       if: always()
       with:
-        name: accurate_battery_no_trickle.zip
+        name: accurate_battery_no_trickle
         path: ${{ github.workspace }}/module_no_trickle/*

@@ -38,12 +38,11 @@ jobs:
       run:
         ls ${{github.workspace}}/musl/bin;
         mkdir -p ${{github.workspace}}/build;
-        export CC="${{github.workspace}}/musl/obj/musl-gcc";
+        export CC="${{github.workspace}}/musl/bin/musl-gcc";
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run:
-        export CC="${{github.workspace}}/musl/obj/musl-gcc -static";
-        ls ${{github.workspace}}/musl/include;
+        export CC="${{github.workspace}}/musl/bin/musl-gcc";
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:

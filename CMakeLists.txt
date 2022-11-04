@@ -6,3 +6,5 @@ project (accurate_battery)
 
 # 指定生成目标
 add_executable(accurate_battery accurate_battery.c)
+
+set(CMAKE_EXE_LINKER_FLAGS "-static")

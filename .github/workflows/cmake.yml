@@ -26,7 +26,7 @@ jobs:
     - name: Build musl libc
       run:
         cd ${{github.workspace}}/musl-1.2.3;
-        make target=aarch64
+        make target=aarch64;
         ls
     - name: Download and unzip aarch64-none-linux-gnu
       run:

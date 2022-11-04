@@ -8,12 +8,13 @@ project (accurate_battery)
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_SYSTEM_NAME "Linux")
 set(CMAKE_SYSTEM_PROCESSOR "aarch64")
+set(CC "${CMAKE_CURRENT_SOURCE_DIR}/musl-1.2.3/obj/musl-gcc")
 
 # 交叉编译器
 set(CMAKE_C_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc")
 
 # 静态编译
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 # 指定生成目标
 file(GLOB_RECURSE ALL_SRCS "accurate_battery*.c")

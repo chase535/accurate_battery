@@ -40,7 +40,7 @@ jobs:
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run:
-        export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";;
+        export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:

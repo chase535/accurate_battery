@@ -45,6 +45,7 @@ jobs:
         cp -af ${{github.workspace}}/musl-1.2.3/include/alltypes.h.in ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h.in;
         cp -af ${{github.workspace}}/musl-1.2.3/include/syscall.h ${{github.workspace}}/musl-1.2.3/include/bits/syscall.h;
         mv ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h.in ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h;
+        cat ${{github.workspace}}/musl-1.2.3/include/alltypes.h.in
         export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc -static";
         ls ${{github.workspace}}/musl-1.2.3/include;
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}

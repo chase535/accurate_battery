@@ -45,6 +45,7 @@ jobs:
         ls ${{github.workspace}}/musl-1.2.3/arch/arm/bits;
         ls ${{github.workspace}}/musl-1.2.3/arch/i386/bits;
         ls ${{github.workspace}}/musl-1.2.3/arch/x86_64/bits;
+        ls ${{github.workspace}}/musl-1.2.3/include;
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:

@@ -21,12 +21,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Download and unzip musl libc
       run:
-        wget http://musl.libc.org/releases/musl-1.2.3.tar.gz;
-        tar -xvf musl-1.2.3.tar.gz -C ${{github.workspace}}
+        wget http://musl.libc.org/releases/musl-1.2.2.tar.gz;
+        tar -xvf musl-1.2.2.tar.gz -C ${{github.workspace}}
     - name: Build musl libc
       run:
-        cd ${{github.workspace}}/musl-1.2.3;
-        ./configure --prefix=${{github.workspace}}/musl-1.2.3 && make target=aarch64;
+        cd ${{github.workspace}}/musl-1.2.2;
+        ./configure --prefix=${{github.workspace}}/musl-1.2.2 && make target=aarch64;
     - name: Download and unzip aarch64-none-linux-gnu
       run:
         wget https://snapshots.linaro.org/gnu-toolchain/13.0-2022.10-1/aarch64-linux-gnu/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz;
@@ -36,18 +36,18 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run:
         mkdir -p ${{github.workspace}}/build;
-        export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";
+        export CC="${{github.workspace}}/musl-1.2.2/obj/musl-gcc";
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run:
-        ls ${{github.workspace}}/musl-1.2.3/include;
-        cp -af ${{github.workspace}}/musl-1.2.3/arch/aarch64/bits ${{github.workspace}}/musl-1.2.3/include/bits;
-        cp -af ${{github.workspace}}/musl-1.2.3/include/alltypes.h.in ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h.in;
-        cp -af ${{github.workspace}}/musl-1.2.3/include/syscall.h ${{github.workspace}}/musl-1.2.3/include/bits/syscall.h;
-        mv ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h.in ${{github.workspace}}/musl-1.2.3/include/bits/alltypes.h;
-        cat ${{github.workspace}}/musl-1.2.3/include/alltypes.h.in;
-        export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc -static";
-        ls ${{github.workspace}}/musl-1.2.3/include;
+        ls ${{github.workspace}}/musl-1.2.2/include;
+        cp -af ${{github.workspace}}/musl-1.2.2/arch/aarch64/bits ${{github.workspace}}/musl-1.2.2/include/bits;
+        cp -af ${{github.workspace}}/musl-1.2.2/include/alltypes.h.in ${{github.workspace}}/musl-1.2.2/include/bits/alltypes.h.in;
+        cp -af ${{github.workspace}}/musl-1.2.2/include/syscall.h ${{github.workspace}}/musl-1.2.2/include/bits/syscall.h;
+        mv ${{github.workspace}}/musl-1.2.2/include/bits/alltypes.h.in ${{github.workspace}}/musl-1.2.2/include/bits/alltypes.h;
+        cat ${{github.workspace}}/musl-1.2.2/include/alltypes.h.in;
+        export CC="${{github.workspace}}/musl-1.2.2/obj/musl-gcc -static";
+        ls ${{github.workspace}}/musl-1.2.2/include;
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:

@@ -36,7 +36,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run:
         mkdir -p ${{github.workspace}}/build;
-        ls ${{github.workspace}}/musl-1.2.3/obj;
+        ls ${{github.workspace}}/musl-1.2.3;
         echo '#!/bin/sh' > ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
         echo 'exec "${REALGCC:-gcc}" "$@" -specs "${{github.workspace}}/musl-1.2.3/obj/lib/musl-gcc.specs"' >> ${{github.workspace}}/musl-1.2.3/obj/musl-gcc;
         export CC="${{github.workspace}}/musl-1.2.3/obj/musl-gcc";

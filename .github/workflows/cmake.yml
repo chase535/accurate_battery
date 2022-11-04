@@ -36,7 +36,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run:
         mkdir -p ${{github.workspace}}/build;
-        export CC="${{github.workspace}}/musl-1.2.3/objmusl-gcc"
+        export CC="${{github.workspace}}/musl-1.2.3/objmusl-gcc";
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}

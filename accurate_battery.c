@@ -53,7 +53,7 @@ int main()
                     if(fp != NULL)
                     {
                         fscanf(fp, "%s", status);
-                        prinrf("%s", *status);
+                        printf("%s", *status);
                         *full = (strcmp(status, "Charging") == 0)?0:1;
                         fclose(fp);
                         fp = NULL;

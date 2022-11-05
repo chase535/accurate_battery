@@ -46,14 +46,14 @@ int main()
             *power += 50;
             if(*power > 9999)
             {
-                printf(">99");
+                printf(">99\n");
                 if(! *full)
                 {
                     fp = fopen("/sys/class/power_supply/bms/status", "rt");
                     if(fp != NULL)
                     {
                         fscanf(fp, "%s", status);
-                        printf("%s", *status);
+                        printf("%s\n", *status);
                         *full = (strcmp(status, "Charging") == 0)?0:1;
                         fclose(fp);
                         fp = NULL;
@@ -67,8 +67,8 @@ int main()
                 }
                 else
                 {
-                    printf("100");
-                    *battery = 100;
+                    printf("100\n");
+                    *battery = "100";
                 }
             }
             else
@@ -79,7 +79,7 @@ int main()
                 else if(*power > 99)
                     snprintf(battery, 2, "%d", *power);
                 else
-                    *battery = 0;
+                    *battery = "0";
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);

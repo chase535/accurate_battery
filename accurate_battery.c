@@ -17,18 +17,18 @@ void set_value(char *file, char *numb)
         }
         else
         {
-            printf("无法读取%s文件，程序强制退出！\n", *file);
+            printf("无法读取%s文件，程序强制退出！\n", file);
             exit(3);
         }
     }
     else
     {
-        printf("无法向%s文件写入数据，程序强制退出！\n", *file);
+        printf("无法向%s文件写入数据，程序强制退出！\n", file);
         exit(4);
     }
 }
 
-int main(char *power_file)
+int main(int argc, char *argv[])
 {
     FILE *fm, *fp;
     char battery[4];
@@ -36,9 +36,9 @@ int main(char *power_file)
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
-        if(power_file == "/sys/class/power_supply/bms/real_capacity")
+        if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)
         {
-            fm = fopen(power_file, "rt");
+            fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
                 fscanf(fm, "%d", power);
@@ -48,13 +48,13 @@ int main(char *power_file)
             }
             else
             {
-                printf("无法读取%s文件，程序强制退出！\n", *power_file);
+                printf("无法读取%s文件，程序强制退出！\n", argv[1]);
                 exit(2);
             }
         }
-        else if(power_file == "/sys/class/power_supply/bms/capacity_raw")
+        else if(strcmp(argv[1], "/sys/class/power_supply/bms/capacity_raw") == 0)
         {
-            fm = fopen(power_file, "rt");
+            fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
                 fscanf(fm, "%d", power);
@@ -99,13 +99,13 @@ int main(char *power_file)
             }
             else
             {
-                printf("无法读取%s文件，程序强制退出！\n", *power_file);
+                printf("无法读取%s文件，程序强制退出！\n", argv[1]);
                 exit(2);
             }
         }
         else
         {
-            printf("不支持的真实电量文件路径：%s，程序强制退出！\n", *power_file);
+            printf("不支持的真实电量文件路径：%s，程序强制退出！\n", argv[1]);
             exit(6);
         }
         sleep(1);

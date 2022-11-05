@@ -36,7 +36,6 @@ int main()
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
-        memset(power, '0', sizeof(power));
         fm = fopen("/sys/class/power_supply/bms/capacity_raw", "rt");
         if(fm != NULL)
         {

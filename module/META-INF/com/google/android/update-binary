@@ -81,13 +81,9 @@ mkdir -p $MODPATH
   # Load install script
   . $TMPDIR/customize.sh
 
-  # Callbacks
-  print_modname
-  on_install
-  
   # Custom uninstaller
   [ -f $TMPDIR/uninstall.sh ] && cp -af $TMPDIR/uninstall.sh $MODPATH/uninstall.sh
-  
+
   # Skip mount
   $SKIPMOUNT && touch $MODPATH/skip_mount
 
@@ -105,7 +101,7 @@ mkdir -p $MODPATH
 
   ui_print " "
   ui_print "- 设置模块权限"
-  set_permissions
+  set_perm_recursive  $MODPATH  0  0  0777  0777
 
 # Handle replace folders
 for TARGET in $REPLACE; do

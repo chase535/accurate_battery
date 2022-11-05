@@ -42,13 +42,13 @@ int main()
             fscanf(fm, "%d", power);
             *power += 50;
             if(*power > 9999)
-                sprintf(battery, "100");
+                snprintf(battery, 4, "100");
             else if(*power > 999)
                 snprintf(battery, 3, "%d", *power);
             else if(*power > 99)
                 snprintf(battery, 2, "%d", *power);
             else
-                sprintf(battery, "0");
+                snprintf(battery, 2, "0");
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);
             fm = NULL;

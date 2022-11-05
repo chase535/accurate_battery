@@ -33,7 +33,7 @@ int main()
     FILE *fm, *fp;
     char battery[4], status[20];
     int power[6], full[1];
-    full = 0;
+    *full = 0;
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
@@ -43,16 +43,16 @@ int main()
         if(fm != NULL)
         {
             fscanf(fm, "%d", power);
-            power += 50;
-            if(power > 9999)
+            *power += 50;
+            if(*power > 9999)
             {
-                if(! full)
+                if(! *full)
                 {
                     fp = fopen("/sys/class/power_supply/bms/status", "rt");
                     if(fp != NULL)
                     {
                         fscanf(fp, "%s", status);
-                        full = (strcmp(status, "Charging") == 0)?0:1;
+                        *full = (strcmp(status, "Charging") == 0)?0:1;
                         fclose(fp);
                         fp = NULL;
                     }
@@ -61,20 +61,20 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    battery = (full)?100:99;
+                    (*full)?sprintf(battery, "100"):sprintf(battery, "99");
                 }
                 else
-                    battery = 100;
+                    sprintf(battery, "100");
             }
             else
             {
-                full = 0;
-                if(power > 999)
-                    snprintf(battery, 3, "%d", power);
-                else if(power > 99)
-                    snprintf(battery, 2, "%d", power);
+                *full = 0;
+                if(*power > 999)
+                    snprintf(battery, 3, "%d", *power);
+                else if(*power > 99)
+                    snprintf(battery, 2, "%d", *power);
                 else
-                    battery = 0;
+                    sprintf(battery, "0");
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);

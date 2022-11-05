@@ -30,8 +30,6 @@ else
     exit 1
 fi
 
-echo 'nohup $MODDIR/accurate_battery $power_file &' >> $TMPDIR/service.sh
-
 if [[ -f $TMPDIR/accurate_battery ]]; then
     if [[ "$real_capacity" != "1" ]]; then
         echo ' - 注意！由于此版本设计为涓流充电结束后才会变为100%'
@@ -40,6 +38,7 @@ if [[ -f $TMPDIR/accurate_battery ]]; then
         echo ''
         echo ' ********************************************************'
     fi
+    echo 'nohup $MODDIR/accurate_battery $power_file &' >> $TMPDIR/service.sh
     cp -af $TMPDIR/accurate_battery $MODPATH/accurate_battery
 elif [[ -f $TMPDIR/accurate_battery_no_trickle ]]; then
     if [[ "$real_capacity" != "1" ]]; then
@@ -49,6 +48,7 @@ elif [[ -f $TMPDIR/accurate_battery_no_trickle ]]; then
         echo ''
         echo ' ********************************************************'
     fi
+    echo 'nohup $MODDIR/accurate_battery_no_trickle $power_file &' >> $TMPDIR/service.sh
     cp -af $TMPDIR/accurate_battery_no_trickle $MODPATH/accurate_battery_no_trickle
 else
     echo '缺少主程序，模块刷入失败！'

@@ -31,14 +31,11 @@ void set_value(char *file, char *numb)
 int main()
 {
     FILE *fm, *fp;
-    char battery[4], status[20];
-    int power[6], full[1];
-    *full = 0;
+    char battery[4];
+    int power[5], current[20], full[1]={0};
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
-        memset(status, '\0', sizeof(status));
-        memset(power, '0', sizeof(power));
         fm = fopen("/sys/class/power_supply/bms/capacity_raw", "rt");
         if(fm != NULL)
         {
@@ -48,11 +45,11 @@ int main()
             {
                 if(! *full)
                 {
-                    fp = fopen("/sys/class/power_supply/bms/status", "rt");
+                    fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
                     if(fp != NULL)
                     {
-                        fscanf(fp, "%s", status);
-                        *full = (strcmp(status, "Charging") == 0)?0:1;
+                        fscanf(fp, "%d", current);
+                        *full = (*current == 0)?1:0;
                         fclose(fp);
                         fp = NULL;
                     }
@@ -61,10 +58,12 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    *battery = (*full)?100:99;
+                    (*full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                 }
                 else
-                    *battery = 100;
+                {
+                    snprintf(battery, 4, "100");
+                }
             }
             else
             {
@@ -74,7 +73,7 @@ int main()
                 else if(*power > 99)
                     snprintf(battery, 2, "%d", *power);
                 else
-                    *battery = 0;
+                    snprintf(battery, 2, "0");
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);

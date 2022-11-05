@@ -32,24 +32,23 @@ int main()
 {
     FILE *fm;
     char battery[4];
-    int power[6];
+    int power[5];
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
-        memset(power, '0', sizeof(power));
         fm = fopen("/sys/class/power_supply/bms/capacity_raw", "rt");
         if(fm != NULL)
         {
             fscanf(fm, "%d", power);
             *power += 50;
             if(*power > 9999)
-                *battery = 100;
+                sprintf(battery, "100");
             else if(*power > 999)
                 snprintf(battery, 3, "%d", *power);
             else if(*power > 99)
                 snprintf(battery, 2, "%d", *power);
             else
-                *battery = 0;
+                sprintf(battery, "0");
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);
             fm = NULL;

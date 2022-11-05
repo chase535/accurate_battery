@@ -31,7 +31,7 @@ void set_value(char *file, char *numb)
 int main(char *power_file)
 {
     FILE *fm, *fp;
-    char battery[4],power_file[100];
+    char battery[4];
     int power[5], current[20], full[1]={0};
     while(1)
     {

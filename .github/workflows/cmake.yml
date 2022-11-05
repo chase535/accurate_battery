@@ -42,7 +42,7 @@ jobs:
     - name: Build modules
       run:
         export CC="${{github.workspace}}/musl/bin/musl-gcc";
-        cmake --build ${{github.workspace}}/build -DCMAKE_BUILD_TYPE ${{env.BUILD_TYPE}}
+        cmake --build ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:
         cp -af ${{github.workspace}}/build/accurate_battery ${{github.workspace}}/modules/accurate_battery/common/accurate_battery;

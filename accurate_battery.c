@@ -44,7 +44,7 @@ int main()
         {
             fscanf(fm, "%d", power);
             *power += 50;
-            if(*power > 9999)
+            if(*power == 10050)
             {
                 if(! *full)
                 {
@@ -61,10 +61,10 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    (*full)?sprintf(battery, "100"):sprintf(battery, "99");
+                    *battery = (*full)?100:99;
                 }
                 else
-                    sprintf(battery, "100");
+                    *battery = 100;
             }
             else
             {
@@ -74,7 +74,7 @@ int main()
                 else if(*power > 99)
                     snprintf(battery, 2, "%d", *power);
                 else
-                    sprintf(battery, "0");
+                    *battery = 0;
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);

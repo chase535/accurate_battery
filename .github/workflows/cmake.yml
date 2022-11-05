@@ -21,7 +21,8 @@ jobs:
     - name: Download and unzip gcc-aarch64-linux-gnu
       run:
         wget https://snapshots.linaro.org/gnu-toolchain/13.0-2022.10-1/aarch64-linux-gnu/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz;
-        tar -xvf gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz -C ${{github.workspace}}
+        tar -xvf gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc -C ${{github.workspace}} --strip-components 2
+        ls ${{github.workspace}}
     - name: Download and unzip musl
       run:
         wget http://musl.libc.org/releases/musl-1.2.3.tar.gz;

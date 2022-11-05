@@ -38,11 +38,11 @@ jobs:
       run:
         mkdir -p ${{github.workspace}}/build;
         export CC="${{github.workspace}}/musl/bin/musl-gcc";
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake -B ${{github.workspace}}/build -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Build modules
       run:
         export CC="${{github.workspace}}/musl/bin/musl-gcc";
-        cmake --build ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake --build ${{github.workspace}}/build -D CMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
     - name: Copy files into modules directory
       run:
         cp -af ${{github.workspace}}/build/accurate_battery ${{github.workspace}}/modules/accurate_battery/common/accurate_battery;

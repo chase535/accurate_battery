@@ -46,15 +46,13 @@ int main()
             *power += 50;
             if(*power > 9999)
             {
-                printf(">99\n");
                 if(! *full)
                 {
                     fp = fopen("/sys/class/power_supply/bms/status", "rt");
                     if(fp != NULL)
                     {
                         fscanf(fp, "%s", status);
-                        printf("%s\n", *status);
-                        *full = (strcmp(status, "Charging") == 0)?0:1;
+                        *full = (strcmp(status, "Full") == 0)?1:0;
                         fclose(fp);
                         fp = NULL;
                     }
@@ -63,12 +61,11 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    *battery = (*full)?"100":"99";
+                    (*full)?sprintf(battery, "100"):sprintf(battery, "99");
                 }
                 else
                 {
-                    printf("100\n");
-                    *battery = "100";
+                    sprintf(battery, "100");
                 }
             }
             else
@@ -79,7 +76,7 @@ int main()
                 else if(*power > 99)
                     snprintf(battery, 2, "%d", *power);
                 else
-                    *battery = "0";
+                    sprintf(battery, "0");
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);

@@ -36,9 +36,8 @@ int main()
     *full = 0;
     while(1)
     {
-        memset(battery, '\0', sizeof(battery));
         memset(status, '\0', sizeof(status));
-        memset(power, '0', sizeof(power));
+        memset(battery, '\0', sizeof(battery));
         fm = fopen("/sys/class/power_supply/bms/capacity_raw", "rt");
         if(fm != NULL)
         {
@@ -61,11 +60,11 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    (*full)?sprintf(battery, "100"):sprintf(battery, "99");
+                    (*full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                 }
                 else
                 {
-                    sprintf(battery, "100");
+                    snprintf(battery, 4, "100");
                 }
             }
             else
@@ -76,7 +75,7 @@ int main()
                 else if(*power > 99)
                     snprintf(battery, 2, "%d", *power);
                 else
-                    sprintf(battery, "0");
+                    snprintf(battery, 2, "0");
             }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             fclose(fm);

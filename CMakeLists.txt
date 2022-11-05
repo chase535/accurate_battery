@@ -4,9 +4,6 @@ cmake_minimum_required(VERSION 2.8.12)
 # 项目信息
 project(accurate_battery)
 
-# 配置版本
-set(CMAKE_BUILD_TYPE "Release")
-
 # 配置环境
 set(CMAKE_SYSTEM_NAME "Linux")
 set(CMAKE_SYSTEM_PROCESSOR "aarch64")

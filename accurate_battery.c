@@ -36,7 +36,7 @@ int main(char *power_file)
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
-        if(*power_file == "/sys/class/power_supply/bms/real_capacity")
+        if(power_file == "/sys/class/power_supply/bms/real_capacity")
         {
             fm = fopen(power_file, "rt");
             if(fm != NULL)
@@ -52,7 +52,7 @@ int main(char *power_file)
                 exit(2);
             }
         }
-        else if(*power_file == "/sys/class/power_supply/bms/capacity_raw")
+        else if(power_file == "/sys/class/power_supply/bms/capacity_raw")
         {
             fm = fopen(power_file, "rt");
             if(fm != NULL)

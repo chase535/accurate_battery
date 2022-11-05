@@ -32,7 +32,7 @@ int main()
 {
     FILE *fm;
     char battery[4];
-    int power[6];
+    int power[5];
     while(1)
     {
         memset(battery, '\0', sizeof(battery));

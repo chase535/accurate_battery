@@ -21,8 +21,7 @@ jobs:
     - name: Download and unzip gcc-aarch64-linux-gnu
       run:
         wget https://snapshots.linaro.org/gnu-toolchain/13.0-2022.10-1/aarch64-linux-gnu/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz;
-        tar -xvf gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc -C ${{github.workspace}} --strip-components 2;
-        ls ${{github.workspace}}
+        tar -xvf gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu.tar.xz gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc -C ${{github.workspace}} --strip-components 2
     - name: Download and unzip musl
       run:
         wget http://musl.libc.org/releases/musl-1.2.3.tar.gz;
@@ -31,7 +30,7 @@ jobs:
       run:
         cd ${{github.workspace}}/musl-1.2.3;
         mkdir -p ${{github.workspace}}/musl;
-        export CC="${{github.workspace}}/gcc-linaro-13.0.0-2022.10-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc";
+        export CC="${{github.workspace}}/aarch64-linux-gnu-gcc";
         ./configure --prefix=${{github.workspace}}/musl aarch64 && make target=aarch64 && make install
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.

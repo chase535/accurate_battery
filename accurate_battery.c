@@ -63,7 +63,7 @@ int main()
                         printf("无法读取电流！\n");
                         exit(1);
                     }
-                    *battery = (*full)?100:99;
+                    *battery = (*full)?"100":"99";
                 }
                 else
                 {

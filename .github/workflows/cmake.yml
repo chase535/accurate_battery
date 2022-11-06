@@ -42,7 +42,7 @@ jobs:
     - name: Copy files into modules directory
       run:
         cp -af ${{github.workspace}}/module ${{github.workspace}}/module_no_trickle;
-        sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为不将涓流充电过程加入电量统计，所以充到100%后仍会有充电电流！如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！/g' ${{github.workspace}}/module_no_trickle${{github.workspace}}/module_no_trickle/module.prop;
+        sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为不将涓流充电过程加入电量统计，所以充到100%后仍会有充电电流！如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！/g' ${{github.workspace}}/module_no_trickle/module.prop;
         cp -af ${{github.workspace}}/build/accurate_battery ${{github.workspace}}/module/common/accurate_battery;
         cp -af ${{github.workspace}}/build/accurate_battery_no_trickle ${{github.workspace}}/module_no_trickle/common/accurate_battery_no_trickle
     - name : Zip and upload accurate_battery

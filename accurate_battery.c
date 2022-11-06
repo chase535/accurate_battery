@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fgets(battery, 4, fm);
+                fgets(battery, 6, fm);
                 fclose(fm);
                 fm = NULL;
             }
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
                         {
                             fgets(current_char, 20, fp);
                             current = atoi(current_char);
-                            memset(battery, '\0', sizeof(current_char));
+                            memset(current_char, '\0', sizeof(current_char));
                             full = (current == 0)?1:0;
                             fclose(fp);
                             fp = NULL;

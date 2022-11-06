@@ -31,8 +31,13 @@ void set_value(char *file, char *numb)
 int main(int argc, char *argv[])
 {
     FILE *fm;
-    char battery[4];
-    int power[5];
+    char battery[10];
+    int power;
+    if(argc < 2)
+    {
+        printf("请传入参数！\n");
+        exit(7);
+    }
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
@@ -41,8 +46,7 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fscanf(fm, "%d", power);
-                snprintf(battery, 4, "%d", *power);
+                fgets(battery, 6, fm);
                 fclose(fm);
                 fm = NULL;
             }
@@ -57,14 +61,16 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fscanf(fm, "%d", power);
-                *power += 50;
-                if(*power > 9999)
+                fgets(battery, 6, fm);
+                power = atoi(battery);
+                memset(battery, '\0', sizeof(battery));
+                power += 50;
+                if(power > 9999)
                     snprintf(battery, 4, "100");
-                else if(*power > 999)
-                    snprintf(battery, 3, "%d", *power);
-                else if(*power > 99)
-                    snprintf(battery, 2, "%d", *power);
+                else if(power > 999)
+                    snprintf(battery, 3, "%d", power);
+                else if(power > 99)
+                    snprintf(battery, 2, "%d", power);
                 else
                     snprintf(battery, 2, "0");
                 set_value("/sys/class/power_supply/battery/capacity", battery);

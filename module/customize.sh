@@ -22,6 +22,8 @@ if [[ -f /sys/class/power_supply/bms/real_capacity ]]; then
     echo ''
     echo ' ********************************************************'
     echo 'capacity_file=/sys/class/power_supply/bms/real_capacity' >> $TMPDIR/service.sh
+    sed -i '/^description/d' $TMPDIR/service.sh
+    echo 'description=精准电量，干掉虚假的UI电量。注意！检测到/sys/class/power_supply/bms/real_capacity文件存在，将直接从此文件中读取电量，充到100%后仍会有充电电流！' >> $TMPDIR/service.sh
     real_capacity="1"
 elif [[ -f /sys/class/power_supply/bms/capacity_raw ]]; then
     echo 'capacity_file=/sys/class/power_supply/bms/capacity_raw' >> $TMPDIR/service.sh

@@ -21,19 +21,14 @@ jobs:
     - name: Download aarch64-linux-gnu
       run:
         git clone https://github.com/theradcolor/aarch64-linux-gnu --depth=1;
-        cd ${{github.workspace}}/aarch64-linux-gnu;
-        ls
     - name: Download musl libc source
       run:
         wget http://musl.libc.org/releases/musl-latest.tar.gz;
-        cd ${{github.workspace}}/musl-latest;
-        tar -xvf musl-latest.tar.gz -C ${{github.workspace}};
-        ls
     - name: Build musl
       run:
-        
+        tar -xvf ${{github.workspace}}/musl-latest.tar.gz -C ${{github.workspace}};
         mkdir -p ${{github.workspace}}/musl;
-        cd ${{github.workspace}}/musl-latest;
+        cd ${{github.workspace}}/`find ${{github.workspace}} -type d -name "musl*"`;
         export CC="${{github.workspace}}/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc";
         ./configure --prefix=${{github.workspace}}/musl aarch64 && make target=aarch64 && make target=aarch64 install
     - name: Configure CMake

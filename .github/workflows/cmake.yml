@@ -27,8 +27,8 @@ jobs:
     - name: Build musl
       run:
         tar -xvf ${{github.workspace}}/musl-latest.tar.gz -C ${{github.workspace}};
+        cd "$(find ${{github.workspace}} -type d -name "musl*")";
         mkdir -p ${{github.workspace}}/musl;
-        cd "${{github.workspace}}/$(find ${{github.workspace}} -type d -name "musl*")";
         export CC="${{github.workspace}}/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc";
         ./configure --prefix=${{github.workspace}}/musl aarch64 && make target=aarch64 && make target=aarch64 install
     - name: Configure CMake

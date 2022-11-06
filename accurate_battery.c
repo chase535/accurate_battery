@@ -31,8 +31,13 @@ void set_value(char *file, char *numb)
 int main(int argc, char *argv[])
 {
     FILE *fm, *fp;
-    char battery[4];
-    int power[5], current[20], full[1]={0};
+    char battery[10], current_char[30];
+    int power, current, full=0;
+    if(argc < 2)
+    {
+        printf("请传入参数！\n");
+        exit(7);
+    }
     while(1)
     {
         memset(battery, '\0', sizeof(battery));
@@ -41,8 +46,7 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fscanf(fm, "%d", power);
-                snprintf(battery, 4, "%d", *power);
+                fgets(battery, 4, fm);
                 fclose(fm);
                 fm = NULL;
             }
@@ -57,17 +61,21 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fscanf(fm, "%d", power);
-                *power += 50;
-                if(*power > 9999)
+                fgets(battery, 6, fm);
+                power = atoi(battery);
+                memset(battery, '\0', sizeof(battery));
+                power += 50;
+                if(power > 9999)
                 {
-                    if(! *full)
+                    if(! full)
                     {
                         fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
                         if(fp != NULL)
                         {
-                            fscanf(fp, "%d", current);
-                            *full = (*current == 0)?1:0;
+                            fgets(current_char, 20, fp);
+                            current = atoi(current_char);
+                            memset(battery, '\0', sizeof(current_char));
+                            full = (current == 0)?1:0;
                             fclose(fp);
                             fp = NULL;
                         }
@@ -76,7 +84,7 @@ int main(int argc, char *argv[])
                             printf("无法读取/sys/class/power_supply/bms/current_now文件，程序强制退出！\n");
                             exit(1);
                         }
-                        (*full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
+                        (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                     }
                     else
                     {
@@ -85,11 +93,11 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    *full = 0;
-                    if(*power > 999)
-                        snprintf(battery, 3, "%d", *power);
-                    else if(*power > 99)
-                        snprintf(battery, 2, "%d", *power);
+                    full = 0;
+                    if(power > 999)
+                        snprintf(battery, 3, "%d", power);
+                    else if(power > 99)
+                        snprintf(battery, 2, "%d", power);
                     else
                         snprintf(battery, 2, "0");
                 }

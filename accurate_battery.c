@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fgets(battery, 4, fm);
+                fgets(battery, 6, fm);
                 fclose(fm);
                 fm = NULL;
             }

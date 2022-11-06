@@ -16,15 +16,15 @@ echo ''
 echo ' ********************************************************'
 echo ''
 
-if [[ -f /sys/class/power_supply/bms/capacity_raw ]]; then
-    echo 'capacity_file=/sys/class/power_supply/bms/capacity_raw' >> $TMPDIR/service.sh
-elif [[ -f /sys/class/power_supply/bms/real_capacity ]]; then
+if [[ -f /sys/class/power_supply/bms/real_capacity ]]; then
     echo ' - 检测到/sys/class/power_supply/bms/real_capacity文件存在'
     echo ' - 将直接从此文件中读取电量，充到100%后仍会有充电电流！'
     echo ''
     echo ' ********************************************************'
     echo 'capacity_file=/sys/class/power_supply/bms/real_capacity' >> $TMPDIR/service.sh
     real_capacity="1"
+elif [[ -f /sys/class/power_supply/bms/capacity_raw ]]; then
+    echo 'capacity_file=/sys/class/power_supply/bms/capacity_raw' >> $TMPDIR/service.sh
 else
     echo '未找到真实电量文件，不支持此手机，模块刷入失败！'
     exit 1

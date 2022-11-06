@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Clone aarch64-linux-gnu
-      run: git clone https://github.com/theradcolor/aarch64-linux-gnu --depth=1
+      run: git clone https://github.com/radcolor/aarch64-linux-gnu.git ${{github.workspace}}/aarch64-linux-gnu --depth=1
     - name: Clone musl
       run: git clone https://github.com/bminor/musl.git ${{github.workspace}}/musl-source --depth=1
     - name: Build musl

@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
             printf("不支持的真实电量文件路径：%s，程序强制退出！\n", argv[1]);
             exit(6);
         }
-        sleep(1);
+        sleep(5);
     }
     return 0;
 }

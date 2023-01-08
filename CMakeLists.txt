@@ -13,8 +13,5 @@ set(CMAKE_C_FLAGS "-O3 -fvisibility=hidden -flto -Wall -Werror -fdata-sections -
 set(CMAKE_EXE_LINKER_FLAGS "-static -O3 -fvisibility=hidden -flto -Wl,-O3,--strip-all -ffixed-x18 -Wl,--hash-style=both -fPIE -Wl,-exclude-libs,ALL -Wl,--gc-sections")
 
 # 指定生成目标
-file(GLOB_RECURSE ALL_SRCS "accurate_battery*.c")
-foreach(mainfile IN LISTS ALL_SRCS)
-    get_filename_component(mainname ${mainfile} NAME_WE)
-    add_executable(${mainname} ${mainfile})
-endforeach()
+add_executable(accurate_battery accurate_battery.c)
+add_executable(accurate_battery_no_trickle accurate_battery_no_trickle.c)

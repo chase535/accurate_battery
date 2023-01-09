@@ -103,15 +103,15 @@ int main(int argc, char *argv[])
                     current = atoi(current_char);
                     if(current)
                     {
-                        full=0
+                        full=0;
                     }
                     else
                     {
-                        full=1
+                        full=1;
                     }
                     if(full)
                     {
-                        snprintf(battery, 4, "100")
+                        snprintf(battery, 4, "100");
                     }
                     else
                     {

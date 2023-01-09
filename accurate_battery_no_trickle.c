@@ -81,13 +81,21 @@ int main(int argc, char *argv[])
             power = atoi(battery);
             power += 50;
             if(power > 9999)
+            {
                 snprintf(battery, 4, "100");
+            }
             else if(power > 999)
+            {
                 snprintf(battery, 3, "%d", power);
+            }
             else if(power > 99)
+            {
                 snprintf(battery, 2, "%d", power);
+            }
             else
+            {
                 snprintf(battery, 2, "0");
+            }
             set_value("/sys/class/power_supply/battery/capacity", battery);
             sleep(5);
         }

@@ -35,12 +35,16 @@ int main(int argc, char *argv[])
     int power;
     if(argc < 2)
     {
-        printf("请传入参数！\n");
+        printf("请传入真实电量文件路径！\n");
         exit(7);
+    }
+    else if(argc > 2)
+    {
+        printf("请传入真实电量文件路径，勿传入多余参数！\n");
+        exit(20);
     }
     while(1)
     {
-        memset(battery, '\0', sizeof(battery));
         if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)
         {
             fm = fopen(argv[1], "rt");
@@ -63,7 +67,6 @@ int main(int argc, char *argv[])
             {
                 fgets(battery, 6, fm);
                 power = atoi(battery);
-                memset(battery, '\0', sizeof(battery));
                 power += 50;
                 if(power > 9999)
                     snprintf(battery, 4, "100");

@@ -82,7 +82,11 @@ int main(int argc, char *argv[])
             power += 50;
             if(power > 9999)
             {
-                if(! full)
+                if(full)
+                {
+                    snprintf(battery, 4, "100");
+                }
+                else
                 {
                     fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
                     if(fp != NULL)
@@ -97,12 +101,22 @@ int main(int argc, char *argv[])
                         exit(1);
                     }
                     current = atoi(current_char);
-                    full = (current == 0)?1:0;
-                    (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
-                }
-                else
-                {
-                    snprintf(battery, 4, "100");
+                    if(current)
+                    {
+                        full=0
+                    }
+                    else
+                    {
+                        full=1
+                    }
+                    if(full)
+                    {
+                        snprintf(battery, 4, "100")
+                    }
+                    else
+                    {
+                        snprintf(battery, 3, "99");
+                    }
                 }
             }
             else

@@ -1,6 +1,6 @@
 id=accurate_battery
 name=精准电量
-version=v7
-versionCode=7
+version=v8
+versionCode=8
 author=酷安@大鸟转转转酒吧
 description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为涓流充电结束后才会变为100%，所以99%-100%充电会极为缓慢！如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！

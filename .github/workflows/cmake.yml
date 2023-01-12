@@ -32,13 +32,11 @@ jobs:
         cp -af ${{github.workspace}}/build/accurate_battery_no_trickle ${{github.workspace}}/module_no_trickle/common/accurate_battery_no_trickle
     - name : Zip and upload accurate_battery
       uses: actions/upload-artifact@v3
-      if: always()
       with:
         name: accurate_battery
         path: ${{github.workspace}}/module/*
     - name : Zip and upload accurate_battery_no_trickle
       uses: actions/upload-artifact@v3
-      if: always()
       with:
         name: accurate_battery_no_trickle
         path: ${{github.workspace}}/module_no_trickle/*

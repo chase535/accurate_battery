@@ -34,14 +34,12 @@ if [[ -f $TMPDIR/accurate_battery ]]; then
     echo ' - 如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！'
     echo 'nohup $MODDIR/accurate_battery $capacity_file &' >> $TMPDIR/service.sh
     cp -f $TMPDIR/accurate_battery $MODPATH/accurate_battery
-    chmod 777 $MODPATH/accurate_battery
 elif [[ -f $TMPDIR/accurate_battery_no_trickle ]]; then
     echo ' - 注意！由于此版本设计为不将涓流充电过程加入电量统计'
     echo ' - 所以充到100%后仍会有充电电流！'
     echo ' - 如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！'
     echo 'nohup $MODDIR/accurate_battery_no_trickle $capacity_file &' >> $TMPDIR/service.sh
     cp -f $TMPDIR/accurate_battery_no_trickle $MODPATH/accurate_battery_no_trickle
-    chmod 777 $MODPATH/accurate_battery_no_trickle
 else
     echo '缺少主程序，模块刷入失败！'
     exit 1

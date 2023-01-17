@@ -101,7 +101,9 @@ mkdir -p $MODPATH
 
   ui_print " "
   ui_print "- 设置模块权限"
-  set_perm_recursive  $MODPATH  0  0  0777  0777
+  set_perm_recursive  $MODPATH  0  0  0755  0644
+  [[ -f $MODPATH/accurate_battery ]] && chmod 777 $MODPATH/accurate_battery
+  [[ -f $MODPATH/accurate_battery_no_trickle ]] && chmod 777 $MODPATH/accurate_battery_no_trickle
 
 # Handle replace folders
 for TARGET in $REPLACE; do

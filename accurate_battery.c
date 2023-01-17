@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fgets(battery, 6, fm);
+                fgets(battery, 4, fm);
                 fclose(fm);
                 fm = NULL;
             }
@@ -59,6 +59,40 @@ int main(int argc, char *argv[])
                 printf("无法读取%s文件，程序强制退出！\n", argv[1]);
                 exit(2);
             }
+            power = atoi(battery);
+            if(power == 100)
+            {
+                if(!full)
+                {
+                    fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
+                    if(fp != NULL)
+                    {
+                        fgets(current_char, 20, fp);
+                        fclose(fp);
+                        fp = NULL;
+                    }
+                    else
+                    {
+                        printf("无法读取/sys/class/power_supply/bms/current_now文件，程序强制退出！\n");
+                        exit(1);
+                    }
+                    current = atoi(current_char);
+                    if(current)
+                    {
+                        full=0;
+                        snprintf(battery, 3, "99");
+                    }
+                    else
+                    {
+                        full=1;
+                    }
+                }
+            }
+            else
+            {
+                full = 0;
+            }
+            set_value("/sys/class/power_supply/battery/capacity", battery);
             sleep(5);
         }
     }
@@ -104,18 +138,12 @@ int main(int argc, char *argv[])
                     if(current)
                     {
                         full=0;
+                        snprintf(battery, 3, "99");
                     }
                     else
                     {
                         full=1;
-                    }
-                    if(full)
-                    {
                         snprintf(battery, 4, "100");
-                    }
-                    else
-                    {
-                        snprintf(battery, 3, "99");
                     }
                 }
             }

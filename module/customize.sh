@@ -10,7 +10,7 @@ echo " - 模块ID: $MODID"
 echo " - 模块版本: $MODversion"
 echo " - 作者: $MODAUTHOR"
 echo ' -      模块介绍↓'
-echo ' - 使用C语言编写，Github Actions进行静态交叉编译(CMake + gcc-aarch64-linux-gnu + musl libc)'
+echo ' - 使用C语言编写，Github Actions进行静态交叉编译(CMake + aarch64-linux-gnu-gcc + musl libc)'
 echo ' - 精准电量，干掉虚假的UI电量'
 echo ' - 程序很简单，开源地址：https://github.com/chase535/accurate_battery'
 echo ''

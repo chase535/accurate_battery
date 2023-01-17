@@ -7,6 +7,7 @@ echo ' ********************************************************'
 echo ''
 echo " - 模块: $MODNAME"
 echo " - 模块ID: $MODID"
+echo " - 模块版本: $MODversion"
 echo " - 作者: $MODAUTHOR"
 echo ' -      模块介绍↓'
 echo ' - 使用C语言编写，Github Actions进行静态交叉编译(CMake + gcc-aarch64-linux-gnu + musl libc)'

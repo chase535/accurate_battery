@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
-                fgets(battery, 6, fm);
+                fgets(battery, 4, fm);
                 fclose(fm);
                 fm = NULL;
             }
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
                 printf("无法读取%s文件，程序强制退出！\n", argv[1]);
                 exit(2);
             }
+            set_value("/sys/class/power_supply/battery/capacity", battery);
             sleep(5);
         }
     }

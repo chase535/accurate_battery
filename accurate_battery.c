@@ -28,10 +28,19 @@ void set_value(char *file, char *numb)
     }
 }
 
+void line_feed(char *line)
+{
+    char *p;
+    if((p = strchr(line, '\n')) != NULL)
+    {
+        *p = '\0';
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    FILE *fm, *fp;
-    char battery[10], current_char[30];
+    FILE *fm, *fp, *fq;
+    char battery[10], current_char[30], charge_status[25];
     int power, current, full=0;
     if(argc < 2)
     {
@@ -59,33 +68,46 @@ int main(int argc, char *argv[])
                 printf("无法读取%s文件，程序强制退出！\n", argv[1]);
                 exit(2);
             }
+            fq = fopen("/sys/class/power_supply/battery/status", "rt");
+            if(fq != NULL)
+            {
+                fgets(charge_status, 20, fq);
+                fclose(fq);
+                fq = NULL;
+            }
+            else
+            {
+                printf("无法读取/sys/class/power_supply/battery/status文件，程序强制退出！\n");
+                exit(10);
+            }
+            line_feed(charge_status);
             power = atoi(battery);
             if(power == 100)
             {
-                if(!full)
+                if(strcmp(charge_status, "Charging") == 0)
                 {
-                    fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
-                    if(fp != NULL)
+                    if(!full)
                     {
-                        fgets(current_char, 20, fp);
-                        fclose(fp);
-                        fp = NULL;
+                        fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
+                        if(fp != NULL)
+                        {
+                            fgets(current_char, 20, fp);
+                            fclose(fp);
+                            fp = NULL;
+                        }
+                        else
+                        {
+                            printf("无法读取/sys/class/power_supply/bms/current_now文件，程序强制退出！\n");
+                            exit(30);
+                        }
+                        current = atoi(current_char);
+                        full=(current <= 0)?1:0;
+                        (full)?:snprintf(battery, 3, "99");
                     }
-                    else
-                    {
-                        printf("无法读取/sys/class/power_supply/bms/current_now文件，程序强制退出！\n");
-                        exit(1);
-                    }
-                    current = atoi(current_char);
-                    if(current)
-                    {
-                        full=0;
-                        snprintf(battery, 3, "99");
-                    }
-                    else
-                    {
-                        full=1;
-                    }
+                }
+                else
+                {
+                    (full)?:snprintf(battery, 3, "99");
                 }
             }
             else
@@ -112,39 +134,50 @@ int main(int argc, char *argv[])
                 printf("无法读取%s文件，程序强制退出！\n", argv[1]);
                 exit(2);
             }
-            power = atoi(battery);
-            power += 50;
+            fq = fopen("/sys/class/power_supply/battery/status", "rt");
+            if(fq != NULL)
+            {
+                fgets(charge_status, 20, fq);
+                fclose(fq);
+                fq = NULL;
+            }
+            else
+            {
+                printf("无法读取/sys/class/power_supply/battery/status文件，程序强制退出！\n");
+                exit(10);
+            }
+            line_feed(charge_status);
+            power = atoi(battery)+50;
             if(power > 9999)
             {
-                if(full)
+                if(strcmp(charge_status, "Charging") == 0)
                 {
-                    snprintf(battery, 4, "100");
+                    if(full)
+                    {
+                        snprintf(battery, 4, "100");
+                    }
+                    else
+                    {
+                        fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
+                        if(fp != NULL)
+                        {
+                            fgets(current_char, 20, fp);
+                            fclose(fp);
+                            fp = NULL;
+                        }
+                        else
+                        {
+                            printf("无法读取/sys/class/power_supply/bms/current_now文件，程序强制退出！\n");
+                            exit(1);
+                        }
+                        current = atoi(current_char);
+                        full=(current <= 0)?1:0;
+                        (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
+                    }
                 }
                 else
                 {
-                    fp = fopen("/sys/class/power_supply/bms/current_now", "rt");
-                    if(fp != NULL)
-                    {
-                        fgets(current_char, 20, fp);
-                        fclose(fp);
-                        fp = NULL;
-                    }
-                    else
-                    {
-                        printf("无法读取/sys/class/power_supply/bms/current_now文件，程序强制退出！\n");
-                        exit(1);
-                    }
-                    current = atoi(current_char);
-                    if(current)
-                    {
-                        full=0;
-                        snprintf(battery, 3, "99");
-                    }
-                    else
-                    {
-                        full=1;
-                        snprintf(battery, 4, "100");
-                    }
+                    (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                 }
             }
             else

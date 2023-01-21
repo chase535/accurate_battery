@@ -24,12 +24,29 @@ jobs:
       run: |
         export CC="${{github.workspace}}/aarch64-linux-musl-gcc/bin/aarch64-linux-musl-gcc"
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-    - name: Copy files into modules directory
+    - name: Copy ELF file into modules directory
       run: |
         cp -af ${{github.workspace}}/module ${{github.workspace}}/module_no_trickle
-        sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为不将涓流充电过程加入电量统计，所以充到100%后仍会有充电电流！如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！/g' ${{github.workspace}}/module_no_trickle/module.prop
         cp -af ${{github.workspace}}/build/accurate_battery ${{github.workspace}}/module/common/accurate_battery
         cp -af ${{github.workspace}}/build/accurate_battery_no_trickle ${{github.workspace}}/module_no_trickle/common/accurate_battery_no_trickle
+    - name: Alter files
+      run: |
+        sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为不将涓流充电过程加入电量统计，所以充到100%后仍会有充电电流！如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！/g' ${{github.workspace}}/module/module.prop
+        sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为涓流充电结束后才会变为100%，所以99%-100%充电会极为缓慢！如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！/g' ${{github.workspace}}/module_no_trickle/module.prop
+        echo 'cp -f $TMPDIR/accurate_battery $MODPATH/accurate_battery' >> ${{github.workspace}}/module/customize.sh
+        echo 'echo " - 注意！由于此版本设计为涓流充电结束后才会变为100%"' >> ${{github.workspace}}/module/customize.sh
+        echo 'echo " - 所以99%-100%充电会极为缓慢！"' >> ${{github.workspace}}/module/customize.sh
+        echo 'echo " - 如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！"' >> ${{github.workspace}}/module/customize.sh
+        echo 'echo ""' >> ${{github.workspace}}/module/customize.sh
+        echo 'echo " ********************************************************"' >> ${{github.workspace}}/module/customize.sh
+        echo 'cp -f ${TMPDIR}/accurate_battery_no_trickle ${MODPATH}/accurate_battery_no_trickle' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'echo " - 注意！由于此版本设计为不将涓流充电过程加入电量统计"' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'echo " - 所以充到100%后仍会有充电电流！"' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'echo " - 如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！"' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'echo ""' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'echo " ********************************************************"' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'nohup ${MODDIR}/accurate_battery ${capacity_file} &' >> ${{github.workspace}}/module/common/service.sh
+        echo 'nohup ${MODDIR}/accurate_battery_no_trickle ${capacity_file} &' >> ${{github.workspace}}/module_no_trickle/common/service.sh
     - name : Zip and upload accurate_battery
       uses: actions/upload-artifact@v3
       with:

@@ -1,6 +1,6 @@
 id=accurate_battery
 name=精准电量
-version=v10
-versionCode=10
+version=v11
+versionCode=11
 author=酷安@大鸟转转转酒吧
 description=精准电量，干掉虚假的UI电量。

@@ -4,7 +4,7 @@ on:
     paths-ignore:
       - 'README.md'
     tags-ignore:
-      - **
+      - *
   pull_request
 jobs:
   build:

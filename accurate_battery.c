@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
                             exit(30);
                         }
                         current = atoi(current_char);
-                        full=(current >= 0)?1:0;
+                        full=(current < 0)?0:1;
                         (full)?:snprintf(battery, 3, "99");
                     }
                 }
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
                             exit(1);
                         }
                         current = atoi(current_char);
-                        full=(current >= 0)?1:0;
+                        full=(current < 0)?0:1;
                         (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                     }
                 }

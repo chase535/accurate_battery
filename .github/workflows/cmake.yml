@@ -3,7 +3,8 @@ on:
   push:
     paths-ignore:
       - 'README.md'
-  pull_request
+  tags-ignore:
+      - '**'
 jobs:
   build:
     runs-on: ubuntu-latest

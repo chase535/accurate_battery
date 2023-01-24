@@ -30,14 +30,21 @@ ui_print "
 
 check_file()
 {
+    ui_print ""
+    ui_print "--- 检查必要文件是否存在 ---"
+    if [[ ! -f "/sys/class/power_supply/battery/current_now" || ! -f "/sys/class/power_supply/battery/capacity" ]]; then
+        ui_print " ！缺少必要文件，不支持此手机，安装失败！"
+        ui_print ""
+        exit 1
+    fi
     if [[ -f /sys/class/power_supply/bms/real_capacity ]]; then
-        ui_print " - 检测到/sys/class/power_supply/bms/real_capacity文件存在"
+        ui_print " - 检测到/sys/class/power_supply/bms/real_capacity文件存在，使用此文件作为真实电量文件"
         sed -i 's|^capacity_file=.*|capacity_file=/sys/class/power_supply/bms/real_capacity|g' $TMPDIR/service.sh
     elif [[ -f /sys/class/power_supply/bms/capacity_raw ]]; then
-        ui_print " - 检测到/sys/class/power_supply/bms/capacity_raw文件存在"
+        ui_print " - 检测到/sys/class/power_supply/bms/capacity_raw文件存在，使用此文件作为真实电量文件"
         sed -i 's|^capacity_file=.*|capacity_file=/sys/class/power_supply/bms/capacity_raw|g' $TMPDIR/service.sh
     else
-        ui_print " ！未找到真实电量文件，不支持此手机，模块刷入失败！"
+        ui_print " ！缺少必要文件，不支持此手机，安装失败！"
         ui_print ""
         exit 1
     fi

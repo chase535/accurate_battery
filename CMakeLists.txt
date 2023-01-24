@@ -14,4 +14,3 @@ set(CMAKE_EXE_LINKER_FLAGS "-g0 -O2 -static -fvisibility=hidden -flto -ffixed-x1
 
 # 指定生成目标
 add_executable(accurate_battery accurate_battery.c)
-add_executable(accurate_battery_no_trickle accurate_battery_no_trickle.c)

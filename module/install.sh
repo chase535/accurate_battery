@@ -79,6 +79,11 @@ run_volume_key_test()
 
 run_choice()
 {
+    ui_print ""
+    ui_print "--- 请选择是否将涓流充电过程加入电量统计（默认加入） ---"
+    ui_print "  音量+键 = 将涓流充电过程加入电量统计，99%-100%充电会极为缓慢"
+    ui_print "  音量-键 = 不将涓流充电过程加入电量统计，100%后仍会有充电电流"
+    ui_print ""
     if "$KEYTEST"; then
         ui_print "- 不将涓流充电过程加入电量统计"
         touch /data/adb/accurate_battery/no_trickle
@@ -108,14 +113,18 @@ run_choice()
 
 on_install()
 {
+    cp -f $TMPDIR/accurate_battery $MODPATH/accurate_battery
     mkdir -p /data/adb/accurate_battery
-    ui_print ""
-    ui_print "--- 请选择是否将涓流充电过程加入电量统计（默认加入） ---"
-    ui_print "  音量+键 = 将涓流充电过程加入电量统计，99%-100%充电会极为缓慢"
-    ui_print "  音量-键 = 不将涓流充电过程加入电量统计，100%后仍会有充电电流"
-    ui_print ""
     run_volume_key_test
     run_choice
+}
+
+set_permissions()
+{
+    set_perm_recursive  $MODPATH  0  0  0755  0644
+    chmod 0777 $MODPATH/accurate_battery
+    chmod 0755 /data/adb/turbo-charge
+    [[ -e /data/adb/accurate_battery/no_trickle ]] && chmod 0644 /data/adb/accurate_battery/no_trickle
 }
 
 check_file

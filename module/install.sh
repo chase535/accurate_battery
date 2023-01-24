@@ -38,10 +38,10 @@ check_file()
         exit 1
     fi
     if [[ -f /sys/class/power_supply/bms/real_capacity ]]; then
-        ui_print " - 检测到/sys/class/power_supply/bms/real_capacity文件存在，使用此文件作为真实电量文件"
+        ui_print "- 检测到/sys/class/power_supply/bms/real_capacity文件存在，使用此文件作为真实电量文件"
         sed -i 's|^capacity_file=.*|capacity_file=/sys/class/power_supply/bms/real_capacity|g' $TMPDIR/service.sh
     elif [[ -f /sys/class/power_supply/bms/capacity_raw ]]; then
-        ui_print " - 检测到/sys/class/power_supply/bms/capacity_raw文件存在，使用此文件作为真实电量文件"
+        ui_print "- 检测到/sys/class/power_supply/bms/capacity_raw文件存在，使用此文件作为真实电量文件"
         sed -i 's|^capacity_file=.*|capacity_file=/sys/class/power_supply/bms/capacity_raw|g' $TMPDIR/service.sh
     else
         ui_print " ！缺少必要文件，不支持此手机，安装失败！"

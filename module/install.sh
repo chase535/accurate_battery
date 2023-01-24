@@ -96,6 +96,7 @@ run_choice()
         ui_print " - 请选择另一选项或删除/data/adb/accurate_battery/no_trickle文件"
         ui_print ""
         ui_print " ********************************************************"
+        ui_print ""
     else
         ui_print "- 将涓流充电过程加入电量统计"
         [[ -e /data/adb/accurate_battery/no_trickle ]] && rm -rf /data/adb/accurate_battery/no_trickle
@@ -108,6 +109,7 @@ run_choice()
         ui_print " - 请选择另一选项或创建/data/adb/accurate_battery/no_trickle文件"
         ui_print ""
         ui_print " ********************************************************"
+        ui_print ""
     fi
 }
 

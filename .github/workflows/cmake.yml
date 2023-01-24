@@ -35,28 +35,28 @@ jobs:
       run: |
         sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为涓流充电结束后才会变为100%，所以99%-100%充电会极为缓慢！如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！/g' ${{github.workspace}}/module/module.prop
         sed -i 's/^description=.*/description=精准电量，干掉虚假的UI电量。注意！由于此版本设计为不将涓流充电过程加入电量统计，所以充到100%后仍会有充电电流！如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！/g' ${{github.workspace}}/module_no_trickle/module.prop
-        echo 'on_install()' >> ${{github.workspace}}/module/customize.sh
-        echo '{' >> ${{github.workspace}}/module/customize.sh
-        echo '    cp -f ${TMPDIR}/accurate_battery ${MODPATH}/accurate_battery' >> ${{github.workspace}}/module/customize.sh
-        echo '    ui_print " - 注意！由于此版本设计为涓流充电结束后才会变为100%"' >> ${{github.workspace}}/module/customize.sh
-        echo '    ui_print " - 所以99%-100%充电会极为缓慢！"' >> ${{github.workspace}}/module/customize.sh
-        echo '    ui_print " - 如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！"' >> ${{github.workspace}}/module/customize.sh
-        echo '    ui_print ""' >> ${{github.workspace}}/module/customize.sh
-        echo '    ui_print " ********************************************************"' >> ${{github.workspace}}/module/customize.sh
-        echo '}' >> ${{github.workspace}}/module/customize.sh
-        echo '' >> ${{github.workspace}}/module/customize.sh
-        echo 'check_file' >> ${{github.workspace}}/module/customize.sh
-        echo 'on_install()' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '{' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '    cp -f ${TMPDIR}/accurate_battery_no_trickle ${MODPATH}/accurate_battery_no_trickle' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '    ui_print " - 注意！由于此版本设计为不将涓流充电过程加入电量统计"' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '    ui_print " - 所以充到100%后仍会有充电电流！"' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '    ui_print " - 如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！"' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '    ui_print ""' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '    ui_print " ********************************************************"' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '}' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo '' >> ${{github.workspace}}/module_no_trickle/customize.sh
-        echo 'check_file' >> ${{github.workspace}}/module_no_trickle/customize.sh
+        echo 'on_install()' >> ${{github.workspace}}/module/install.sh
+        echo '{' >> ${{github.workspace}}/module/install.sh
+        echo '    cp -f ${TMPDIR}/accurate_battery ${MODPATH}/accurate_battery' >> ${{github.workspace}}/module/install.sh
+        echo '    ui_print " - 注意！由于此版本设计为涓流充电结束后才会变为100%"' >> ${{github.workspace}}/module/install.sh
+        echo '    ui_print " - 所以99%-100%充电会极为缓慢！"' >> ${{github.workspace}}/module/install.sh
+        echo '    ui_print " - 如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！"' >> ${{github.workspace}}/module/install.sh
+        echo '    ui_print ""' >> ${{github.workspace}}/module/install.sh
+        echo '    ui_print " ********************************************************"' >> ${{github.workspace}}/module/install.sh
+        echo '}' >> ${{github.workspace}}/module/install
+        echo '' >> ${{github.workspace}}/module/install.sh
+        echo 'check_file' >> ${{github.workspace}}/module/install.sh
+        echo 'on_install()' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '{' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '    cp -f ${TMPDIR}/accurate_battery_no_trickle ${MODPATH}/accurate_battery_no_trickle' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '    ui_print " - 注意！由于此版本设计为不将涓流充电过程加入电量统计"' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '    ui_print " - 所以充到100%后仍会有充电电流！"' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '    ui_print " - 如想将涓流充电过程加入电量统计，请使用后缀不带no_trickle的版本！"' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '    ui_print ""' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '    ui_print " ********************************************************"' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '}' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo '' >> ${{github.workspace}}/module_no_trickle/install.sh
+        echo 'check_file' >> ${{github.workspace}}/module_no_trickle/install.sh
         echo 'nohup ${MODDIR}/accurate_battery ${capacity_file} &' >> ${{github.workspace}}/module/common/service.sh
         echo 'nohup ${MODDIR}/accurate_battery_no_trickle ${capacity_file} &' >> ${{github.workspace}}/module_no_trickle/common/service.sh
     - name : Zip and upload accurate_battery

@@ -32,7 +32,7 @@ check_file()
 {
     ui_print ""
     ui_print "--- 检查必要文件是否存在 ---"
-    if [[ ! -f "/sys/class/power_supply/battery/current_now" || ! -f "/sys/class/power_supply/battery/capacity" ]]; then
+    if [[ ! -f "/sys/class/power_supply/battery/status" || ! -f "/sys/class/power_supply/battery/current_now" || ! -f "/sys/class/power_supply/battery/capacity" ]]; then
         ui_print " ！缺少必要文件，不支持此手机，安装失败！"
         ui_print ""
         exit 1

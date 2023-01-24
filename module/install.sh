@@ -13,6 +13,10 @@ ui_print "
  - 作者: $author
  -      ↓模块介绍↓
  - 精准电量，干掉虚假的UI电量
+ - 可选择是否将涓流充电过程加入电量统计
+ - 模块可通过创建或删除/data/adb/accurate_battery/no_trickle文件来更改选择
+ - 创建为不加入，删除为加入，更改实时生效，无需重启手机
+ - 亦可通过重刷模块来更改选择，也无需重启手机
 
  ********************************************************
 
@@ -38,3 +42,81 @@ check_file()
         exit 1
     fi
 }
+
+volume_keytest()
+{
+    ui_print "--- 音量键测试 ---"
+    ui_print "  请按音量+或-键"
+    (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep VOLUME | /system/bin/grep " DOWN" > "$TMPDIR"/events) || return 1
+    return 0
+}
+
+volume_choose()
+{
+    while true; do
+        /system/bin/getevent -lc 1 2>&1 | /system/bin/grep VOLUME | /system/bin/grep " DOWN" > "$TMPDIR"/events
+        if (`cat "$TMPDIR"/events 2>/dev/null | /system/bin/grep VOLUME >/dev/null`); then
+            break
+        fi
+    done
+    if (`cat "$TMPDIR"/events 2>/dev/null | /system/bin/grep VOLUMEUP >/dev/null`); then
+        return 1
+    else
+        return 0
+    fi
+}
+
+run_volume_key_test()
+{
+    if volume_keytest; then
+        KEYTEST=volume_choose
+        ui_print "- 音量键测试完成"
+    else
+        KEYTEST=false
+        ui_print " ！错误：没有检测到音量键选择，默认将涓流充电过程加入电量统计"
+    fi
+}
+
+run_choice()
+{
+    if "$KEYTEST"; then
+        ui_print "- 不将涓流充电过程加入电量统计"
+        touch /data/adb/accurate_battery/no_trickle
+        ui_print ""
+        ui_print " ********************************************************"
+        ui_print ""
+        ui_print " - 注意！由于此选项设计为涓流充电结束后才会变为100%"
+        ui_print " - 所以99%-100%充电会极为缓慢！"
+        ui_print " - 如不想将涓流充电过程加入电量统计"
+        ui_print " - 请选择另一选项或删除/data/adb/accurate_battery/no_trickle文件"
+        ui_print ""
+        ui_print " ********************************************************"
+    else
+        ui_print "- 将涓流充电过程加入电量统计"
+        [[ -e /data/adb/accurate_battery/no_trickle ]] && rm -rf /data/adb/accurate_battery/no_trickle
+        ui_print ""
+        ui_print " ********************************************************"
+        ui_print ""
+        ui_print " - 注意！由于此版本设计为不将涓流充电过程加入电量统计"
+        ui_print " - 所以充到100%后仍会有充电电流！"
+        ui_print " - 如想将涓流充电过程加入电量统计"
+        ui_print " - 请选择另一选项或创建/data/adb/accurate_battery/no_trickle文件"
+        ui_print ""
+        ui_print " ********************************************************"
+    fi
+}
+
+on_install()
+{
+    mkdir -p /data/adb/accurate_battery
+    ui_print ""
+    ui_print "--- 请选择是否将涓流充电过程加入电量统计（默认加入） ---"
+    ui_print "  音量+键 = 将涓流充电过程加入电量统计，99%-100%充电会极为缓慢"
+    ui_print "  音量-键 = 不将涓流充电过程加入电量统计，100%后仍会有充电电流"
+    ui_print ""
+    run_volume_key_test
+    run_choice
+}
+
+check_file
+source $TMPDIR/module.prop

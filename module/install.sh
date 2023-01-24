@@ -48,6 +48,7 @@ check_file()
         ui_print ""
         exit 1
     fi
+    ui_print "- 必要文件均存在，开始安装"
 }
 
 volume_keytest()

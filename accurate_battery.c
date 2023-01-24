@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 {
     FILE *fm, *fp, *fq;
     char battery[10], current_char[30], charge_status[25];
-    int power, current, full=0,no_trickle=0;
+    int power, current, full=0,no_trickle;
     if(argc < 2)
     {
         printf("请传入真实电量文件路径！\n");
@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
         while(1)
         {
             if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0) no_trickle=1;
+            else no_trickle=0;
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {
@@ -126,6 +127,7 @@ int main(int argc, char *argv[])
         while(1)
         {
             if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0) no_trickle=1;
+            else no_trickle=0;
             fm = fopen(argv[1], "rt");
             if(fm != NULL)
             {

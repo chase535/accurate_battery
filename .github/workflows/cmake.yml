@@ -43,7 +43,7 @@ jobs:
         echo '    ui_print " - 如不想将涓流充电过程加入电量统计，请使用后缀带no_trickle的版本！"' >> ${{github.workspace}}/module/install.sh
         echo '    ui_print ""' >> ${{github.workspace}}/module/install.sh
         echo '    ui_print " ********************************************************"' >> ${{github.workspace}}/module/install.sh
-        echo '}' >> ${{github.workspace}}/module/install
+        echo '}' >> ${{github.workspace}}/module/install.sh
         echo '' >> ${{github.workspace}}/module/install.sh
         echo 'check_file' >> ${{github.workspace}}/module/install.sh
         echo 'on_install()' >> ${{github.workspace}}/module_no_trickle/install.sh

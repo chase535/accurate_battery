@@ -103,7 +103,7 @@ run_choice()
         ui_print ""
         ui_print " ********************************************************"
         ui_print ""
-        ui_print " - 注意！由于此版本设计为不将涓流充电过程加入电量统计"
+        ui_print " - 注意！由于此选项设计为不将涓流充电过程加入电量统计"
         ui_print " - 所以充到100%后仍会有充电电流！"
         ui_print " - 如想将涓流充电过程加入电量统计"
         ui_print " - 请选择另一选项或创建/data/adb/accurate_battery/no_trickle文件"

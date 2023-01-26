@@ -10,7 +10,6 @@ void set_value(char *file, char *numb)
     FILE *fn;
     if(access(file, F_OK) == 0)
     {
-        chmod(file, 0777);
         fn = fopen(file, "wt");
         if(fn != NULL)
         {
@@ -20,13 +19,24 @@ void set_value(char *file, char *numb)
         }
         else
         {
-            printf("无法读取%s文件，程序强制退出！\n", file);
-            exit(3);
+            chmod(file, 0644);
+            fn = fopen(file, "wt");
+            if(fn != NULL)
+            {
+                fputs(numb, fn);
+                fclose(fn);
+                fn = NULL;
+            }
+            else
+            {
+                printf("无法向%s文件写入数据，程序强制退出！\n", file);
+                exit(3);
+            }
         }
     }
     else
     {
-        printf("无法向%s文件写入数据，程序强制退出！\n", file);
+        printf("找不到%s文件，程序强制退出！\n", file);
         exit(4);
     }
 }

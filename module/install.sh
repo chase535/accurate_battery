@@ -46,6 +46,7 @@ check_file()
     else
         ui_print " ！缺少必要文件，不支持此手机，安装失败！"
         ui_print ""
+        rm -rf $MODPATH
         exit 1
     fi
     ui_print "- 必要文件均存在，开始安装"

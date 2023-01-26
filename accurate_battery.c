@@ -120,10 +120,10 @@ int main(int argc, char *argv[])
                             }
                             current = atoi(current_char);
                             full=(current < 0)?0:1;
-                            (full)?:snprintf(battery, 3, "99");
+                            (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                         }
                     }
-                    else (full)?:snprintf(battery, 3, "99");
+                    else (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
                 }
                 else full = 0;
             }

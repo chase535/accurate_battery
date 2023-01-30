@@ -37,7 +37,7 @@ jobs:
           git config --global user.name "${GITHUB_USER}"
           git config --global user.email "${GITHUB_EMAIL}"
           mkdir -vp ${{ github.workspace }}/git_clone
-          git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery ${{ github.workspace }}/git_clone -b main --depth=1
+          git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery.git ${{ github.workspace }}/git_clone -b main --depth=1
           cd ${{ github.workspace }}/git_clone
           cp -avf ${{ github.workspace }}/accurate_battery.zip ./update_channel
           cat ./update_channel/changelog.md >> ${{ github.workspace }}/changelog.md
@@ -49,4 +49,3 @@ jobs:
           git add . -f
           git commit -a -m "更新${tag}版本"
           git push origin main -f
-  

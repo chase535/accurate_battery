@@ -1,3 +1,11 @@
+# v23
+
+### Changelog
+
+无实质性更新，将Magisk内部更新通道切换为Gitee，极大提升更新体验。
+
+[Gitee](https://gitee.com/chase535/turbo-charge)将实时同步[GitHub](https://github.com/chase535/turbo-charge)的任何更改，但由于众所周知的原因，Gitee仅充当更新通道，我不会使用Gitee。
+
 # v19-v22
 
 因为20、21、22版本均为修复19版本才有的BUG，所以合并更新日志

@@ -78,7 +78,7 @@ void read_file(char *file,char *value)
 int main(int argc, char *argv[])
 {
     char battery[10],current_char[30],charge_status[25];
-    int power,current,full=0,num=0,no_trickle;
+    int power,current,full=0,num=0,no_trickle,charge_full;
     if(argc < 2)
     {
         printf("请传入真实电量文件路径！\n");
@@ -98,6 +98,7 @@ int main(int argc, char *argv[])
     check_file("/sys/class/power_supply/battery/current_now");
     check_file("/sys/class/power_supply/battery/capacity");
     check_file(argv[1]);
+    charge_full=(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)?100:10000;
     while(1)
     {
         read_file("/sys/class/power_supply/battery/current_now", current_char);
@@ -110,16 +111,18 @@ int main(int argc, char *argv[])
         {
             num=5;
             full=1;
+            read_file(argv[1], battery);
+            charge_full=atoi(battery);
             set_value("/sys/class/power_supply/battery/capacity", "100");
             continue;
         }
         if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)
         {
             read_file(argv[1], battery);
-            power = atoi(battery);
+            power=atoi(battery)+100-charge_full;
             if(!no_trickle)
             {
-                if(power == 100)
+                if(power >= 100)
                 {
                     if(!full) snprintf(battery, 3, "99");
                 }
@@ -129,7 +132,7 @@ int main(int argc, char *argv[])
         else if(strcmp(argv[1], "/sys/class/power_supply/bms/capacity_raw") == 0)
         {
             read_file(argv[1], battery);
-            power = atoi(battery)+50;
+            power=atoi(battery)+10000-charge_full+50;
             if(power > 9999)
             {
                 if(no_trickle || full) snprintf(battery, 4, "100");
@@ -144,7 +147,7 @@ int main(int argc, char *argv[])
             }
         }
         set_value("/sys/class/power_supply/battery/capacity", battery);
-        sleep(1);
+        sleep(5);
     }
     return 0;
 }

@@ -44,10 +44,8 @@ void set_value(char *file, char *numb)
 void line_feed(char *line)
 {
     char *p;
-    if((p = strchr(line, '\n')) != NULL)
-    {
-        *p = '\0';
-    }
+    p=strchr(line, '\n');
+    if(p != NULL) *p='\0';
 }
 
 void check_file(char *file)
@@ -59,11 +57,28 @@ void check_file(char *file)
     }
 }
 
+void read_file(char *file,char *value)
+{
+    FILE *fp;
+    fp = fopen(file, "rt");
+    if(fp != NULL)
+    {
+        fgets(value, sizeof(value), fp);
+        line_feed(value);
+        fclose(fp);
+        fp = NULL;
+    }
+    else
+    {
+        printf("无法读取%s文件，程序强制退出！\n", file);
+        exit(30);
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    FILE *fm, *fp, *fq;
-    char battery[10], current_char[30], charge_status[25];
-    int power, current, full=0,no_trickle;
+    char battery[10],current_char[30],charge_status[25];
+    int power,current,full=0,num=0,no_trickle;
     if(argc < 2)
     {
         printf("请传入真实电量文件路径！\n");
@@ -74,153 +89,62 @@ int main(int argc, char *argv[])
         printf("请传入真实电量文件路径，勿传入多余参数！\n");
         exit(20);
     }
+    else if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") != 0 && strcmp(argv[1], "/sys/class/power_supply/bms/capacity_raw") != 0)
+    {
+        printf("不支持的真实电量文件路径：%s，程序强制退出！\n", argv[1]);
+        exit(6);
+    }
     check_file("/sys/class/power_supply/battery/status");
     check_file("/sys/class/power_supply/battery/current_now");
     check_file("/sys/class/power_supply/battery/capacity");
-    if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)
+    check_file(argv[1]);
+    while(1)
     {
-        check_file(argv[1]);
-        while(1)
+        read_file("/sys/class/power_supply/battery/current_now", current_char);
+        current = atoi(current_char);
+        read_file("/sys/class/power_supply/battery/status", charge_status);
+        no_trickle=(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0)?1:0;
+        if(strcmp(charge_status, "Full") == 0) num=(current <= 0)?num+1:0;
+        else num=0;
+        if(num > 5)
         {
-            if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0) no_trickle=1;
-            else no_trickle=0;
-            fm = fopen(argv[1], "rt");
-            if(fm != NULL)
-            {
-                fgets(battery, 4, fm);
-                fclose(fm);
-                fm = NULL;
-            }
-            else
-            {
-                printf("无法读取%s文件，程序强制退出！\n", argv[1]);
-                exit(2);
-            }
+            num=5;
+            full=1;
+            set_value("/sys/class/power_supply/battery/capacity", "100");
+            continue;
+        }
+        if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)
+        {
+            read_file(argv[1], battery);
             power = atoi(battery);
             if(!no_trickle)
             {
                 if(power == 100)
                 {
-                    fq = fopen("/sys/class/power_supply/battery/status", "rt");
-                    if(fq != NULL)
-                    {
-                        fgets(charge_status, 20, fq);
-                        fclose(fq);
-                        fq = NULL;
-                    }
-                    else
-                    {
-                        printf("无法读取/sys/class/power_supply/battery/status文件，程序强制退出！\n");
-                        exit(10);
-                    }
-                    line_feed(charge_status);
-                    if(strcmp(charge_status, "Charging") == 0 || strcmp(charge_status, "Full") == 0)
-                    {
-                        if(!full)
-                        {
-                            fp = fopen("/sys/class/power_supply/battery/current_now", "rt");
-                            if(fp != NULL)
-                            {
-                                fgets(current_char, 20, fp);
-                                fclose(fp);
-                                fp = NULL;
-                            }
-                            else
-                            {
-                                printf("无法读取/sys/class/power_supply/battery/current_now文件，程序强制退出！\n");
-                                exit(30);
-                            }
-                            current = atoi(current_char);
-                            full=(current < 0)?0:1;
-                            (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
-                        }
-                    }
-                    else (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
+                    if(!full) snprintf(battery, 3, "99");
                 }
-                else full = 0;
+                else full=0;
             }
-            set_value("/sys/class/power_supply/battery/capacity", battery);
-            sleep(5);
         }
-    }
-    else if(strcmp(argv[1], "/sys/class/power_supply/bms/capacity_raw") == 0)
-    {
-        check_file(argv[1]);
-        while(1)
+        else if(strcmp(argv[1], "/sys/class/power_supply/bms/capacity_raw") == 0)
         {
-            if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0) no_trickle=1;
-            else no_trickle=0;
-            fm = fopen(argv[1], "rt");
-            if(fm != NULL)
-            {
-                fgets(battery, 6, fm);
-                fclose(fm);
-                fm = NULL;
-            }
-            else
-            {
-                printf("无法读取%s文件，程序强制退出！\n", argv[1]);
-                exit(2);
-            }
+            read_file(argv[1], battery);
             power = atoi(battery)+50;
             if(power > 9999)
             {
-                if(no_trickle) snprintf(battery, 4, "100");
-                else
-                {
-                    fq = fopen("/sys/class/power_supply/battery/status", "rt");
-                    if(fq != NULL)
-                    {
-                        fgets(charge_status, 20, fq);
-                        fclose(fq);
-                        fq = NULL;
-                    }
-                    else
-                    {
-                        printf("无法读取/sys/class/power_supply/battery/status文件，程序强制退出！\n");
-                        exit(10);
-                    }
-                    line_feed(charge_status);
-                    if(strcmp(charge_status, "Charging") == 0 || strcmp(charge_status, "Full") == 0)
-                    {
-                        if(full) snprintf(battery, 4, "100");
-                        else
-                        {
-                            fp = fopen("/sys/class/power_supply/battery/current_now", "rt");
-                            if(fp != NULL)
-                            {
-                                fgets(current_char, 20, fp);
-                                fclose(fp);
-                                fp = NULL;
-                            }
-                            else
-                            {
-                                printf("无法读取/sys/class/power_supply/battery/current_now文件，程序强制退出！\n");
-                                exit(1);
-                            }
-                            current = atoi(current_char);
-                            full=(current < 0)?0:1;
-                            (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
-                        }
-                    }
-                    else (full)?snprintf(battery, 4, "100"):snprintf(battery, 3, "99");
-                }
+                if(no_trickle || full) snprintf(battery, 4, "100");
+                else snprintf(battery, 3, "99");
             }
             else
             {
-                full = 0;
+                full=0;
                 if(power > 999) snprintf(battery, 3, "%d", power);
                 else if(power > 99) snprintf(battery, 2, "%d", power);
                 else snprintf(battery, 2, "0");
             }
-            set_value("/sys/class/power_supply/battery/capacity", battery);
-            sleep(5);
         }
-    }
-    else
-    {
-        printf("不支持的真实电量文件路径：%s，程序强制退出！\n", argv[1]);
-        exit(6);
+        set_value("/sys/class/power_supply/battery/capacity", battery);
+        sleep(5);
     }
     return 0;
 }

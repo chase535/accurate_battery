@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
             }
         }
         set_value("/sys/class/power_supply/battery/capacity", battery);
-        sleep(5);
+        sleep(1);
     }
     return 0;
 }

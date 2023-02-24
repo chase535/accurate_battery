@@ -41,10 +41,10 @@ jobs:
           cd ${{ github.workspace }}/git_clone
           cp -avf ${{ github.workspace }}/accurate_battery.zip ./update_channel
           cat ./update_channel/changelog.md >> ${{ github.workspace }}/changelog.md
-          unix2dos ${{ github.workspace }}/changelog.md
+          dos2unix ${{ github.workspace }}/changelog.md
           cp -avf ${{ github.workspace }}/changelog.md ./update_channel
           jq -sM add ./update_channel/accurate_battery.json ${{ github.workspace }}/version.json > ${{ github.workspace }}/accurate_battery.json
-          unix2dos ${{ github.workspace }}/accurate_battery.json
+          dos2unix ${{ github.workspace }}/accurate_battery.json
           cp -avf ${{ github.workspace }}/accurate_battery.json ./update_channel
           git add . -f
           git commit -a -m "更新${tag}版本"

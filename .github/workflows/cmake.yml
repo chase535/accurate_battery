@@ -36,7 +36,7 @@ jobs:
           cmake --build ${{github.workspace}}/build --config Release
       - name: Copy ELF file into module directory
         run: cp -f ${{github.workspace}}/build/accurate_battery ${{github.workspace}}/module/common/accurate_battery
-      - name : Zip and upload accurate_battery
+      - name : Zip and upload module
         uses: actions/upload-artifact@v3
         with:
           name: accurate_battery

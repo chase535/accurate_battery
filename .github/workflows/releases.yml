@@ -9,11 +9,14 @@ env:
   GITHUB_USER: "${{secrets.USERNAME}}"
   GITHUB_EMAIL: "${{secrets.EMAIL}}"
   GITHUB_TOKEN: "${{secrets.API_TOKEN_GITHUB}}"
+  GIT_CLONE: "${{ github.workspace }}/git_clone"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@main
       - name: Install tools
         run: |
           sudo apt-get update
@@ -36,9 +39,9 @@ jobs:
           tag=$(echo ${{ github.ref }} | sed "s|refs/tags/||g")
           git config --global user.name "${GITHUB_USER}"
           git config --global user.email "${GITHUB_EMAIL}"
-          mkdir -vp ${{ github.workspace }}/git_clone
-          git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery.git ${{ github.workspace }}/git_clone -b main --depth=1
-          cd ${{ github.workspace }}/git_clone
+          mkdir -vp ${GIT_CLONE}
+          git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery.git ${GIT_CLONE} -b main --depth=1
+          cd ${GIT_CLONE}
           cp -avf ${{ github.workspace }}/accurate_battery.zip ./update_channel
           cat ./update_channel/changelog.md >> ${{ github.workspace }}/changelog.md
           dos2unix ${{ github.workspace }}/changelog.md

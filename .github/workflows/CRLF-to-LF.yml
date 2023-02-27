@@ -9,11 +9,14 @@ env:
   GITHUB_USER: "${{secrets.USERNAME}}"
   GITHUB_EMAIL: "${{secrets.EMAIL}}"
   GITHUB_TOKEN: "${{secrets.API_TOKEN_GITHUB}}"
+  GIT_CLONE: "${{ github.workspace }}/git_clone"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@main
       - name: Install tools
         run: |
           sudo apt-get update
@@ -22,12 +25,13 @@ jobs:
         run: |
           git config --global user.name "${GITHUB_USER}"
           git config --global user.email "${GITHUB_EMAIL}"
-          mkdir -vp ${{ github.workspace }}/git_clone
-          git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery.git ${{ github.workspace }}/git_clone -b main --depth=1
-          cd ${{ github.workspace }}/git_clone
+          mkdir -vp ${GIT_CLONE}
+          git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery.git ${GIT_CLONE} -b main --depth=1
+          cd ${GIT_CLONE}
           files=$(find . -type f -not -path "./.git/*")
           dos2unix ${files}
-          [[ -z "$(git diff)" ]] && exit 0
-          git add . -f
-          git commit -a -m "换行符CRLF转LF"
-          git push origin main -f
+          if [ -n "$(git diff)" ]; then
+            git add . -f
+            git commit -a -m "换行符CRLF转LF"
+            git push origin main -f
+          fi

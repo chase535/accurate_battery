@@ -29,9 +29,9 @@ jobs:
           git clone https://"${GITHUB_USER}":"${GITHUB_TOKEN}"@github.com/chase535/accurate_battery.git ${GIT_CLONE} -b main --depth=1
           cd ${GIT_CLONE}
           files=$(find . -type f -not -path "./.git/*")
-          dos2unix ${files}
+          unix2dos ${files}
           if [ -n "$(git diff)" ]; then
             git add . -f
-            git commit -a -m "换行符CRLF转LF"
+            git commit -a -m "换行符LF转CRLF"
             git push origin main -f
           fi

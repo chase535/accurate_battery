@@ -36,8 +36,10 @@ jobs:
         run: cmake -B build
       - name: Build module
         run: make -C build -j$(nproc --all)
-      - name: Copy ELF file into module directory
-        run: cp -f ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common/accurate_battery
+      - name: Copy files into module directory
+        run: |
+          cp -f ${{ github.workspace }}/README.md ${{ github.workspace }}/LICENSE ${{ github.workspace }}/module
+          cp -f ${{ github.workspace }}/build/accurate_battery ${{ github.workspace }}/module/common
       - name : Zip and upload module
         uses: actions/upload-artifact@main
         with:

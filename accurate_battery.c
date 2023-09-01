@@ -109,6 +109,8 @@ void set_value(char *file, char *numb)
 void line_feed(char *line)
 {
     char *p;
+    p=strchr(line, '\r');
+    if(p != NULL) *p='\0';
     p=strchr(line, '\n');
     if(p != NULL) *p='\0';
 }
@@ -122,22 +124,43 @@ void check_file(char *file)
     }
 }
 
-void read_file(char *file,char *value)
+void check_read_file(char *file)
 {
-    FILE *fp;
-    fp = fopen(file, "rt");
-    if(fp != NULL)
+    if(!access(file, F_OK))
     {
-        fgets(value, sizeof(value), fp);
-        line_feed(value);
-        fclose(fp);
-        fp = NULL;
+        check_permission:
+        if(access(file, R_OK))
+        {
+            chmod(file, 0644);
+            if(access(file, R_OK))
+            {
+                printf_with_time("无法读取%s文件，程序强制退出！", file);
+                exit(1);
+            }
+        }
     }
     else
     {
-        printf_with_time("无法读取%s文件，程序强制退出！", file);
-        exit(30);
+        struct timespec req={0, 250000000L};
+        nanosleep(&req, NULL);
+        if(!access(file, F_OK)) goto check_permission;
+        else
+        {
+            printf_with_time("找不到%s文件，程序强制退出！", file);
+            exit(999);
+        }
     }
+}
+
+void read_file(char *file_path, char *char_var, int max_char_num)
+{
+    FILE *fp;
+    check_read_file(file_path);
+    fp=fopen(file_path, "rt");
+    fgets(char_var, max_char_num, fp);
+    fclose(fp);
+    fp=NULL;
+    line_feed(char_var);
 }
 
 int main(int argc, char *argv[])
@@ -166,9 +189,9 @@ int main(int argc, char *argv[])
     charge_full=(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)?100:10000;
     while(1)
     {
-        read_file("/sys/class/power_supply/battery/current_now", current_char);
+        read_file("/sys/class/power_supply/battery/current_now", current_char, sizeof(current_char));
         current = atoi(current_char);
-        read_file("/sys/class/power_supply/battery/status", charge_status);
+        read_file("/sys/class/power_supply/battery/status", charge_status, sizeof(charge_status));
         if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0 && no_trickle == 0)
         {
             printf_with_time("/data/adb/accurate_battery/no_trickle文件存在，不将涓流充电过程加入电量统计");
@@ -186,14 +209,14 @@ int main(int argc, char *argv[])
         {
             num=5;
             full=1;
-            read_file(argv[1], battery);
+            read_file(argv[1], battery, sizeof(battery));
             charge_full=atoi(battery);
             set_value("/sys/class/power_supply/battery/capacity", "100");
             continue;
         }
         if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)
         {
-            read_file(argv[1], battery);
+            read_file(argv[1], battery, sizeof(battery));
             power=atoi(battery)+100-charge_full;
             if(!no_trickle)
             {
@@ -206,7 +229,7 @@ int main(int argc, char *argv[])
         }
         else if(strcmp(argv[1], "/sys/class/power_supply/bms/capacity_raw") == 0)
         {
-            read_file(argv[1], battery);
+            read_file(argv[1], battery, sizeof(battery));
             power=atoi(battery)+10000-charge_full+50;
             if(power > 9999)
             {

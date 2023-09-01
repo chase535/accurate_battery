@@ -3,7 +3,7 @@ SKIPUNZIP=1
 check_file()
 {
     ui_print " "
-    ui_print "--- 检查必要文件是否存在 ---"
+    ui_print " --- 检查必要文件是否存在 ---"
     if [[ ! -f "/sys/class/power_supply/battery/status" || ! -f "/sys/class/power_supply/battery/current_now" || ! -f "/sys/class/power_supply/battery/capacity" ]]; then
         ui_print " ！缺少必要文件，不支持此手机，安装失败！"
         ui_print " "
@@ -11,10 +11,10 @@ check_file()
         exit 1
     fi
     if [[ -f /sys/class/power_supply/bms/real_capacity ]]; then
-        ui_print "- 检测到/sys/class/power_supply/bms/real_capacity文件存在，使用此文件作为真实电量文件"
+        ui_print " - 检测到/sys/class/power_supply/bms/real_capacity文件存在，使用此文件作为真实电量文件"
         sed -i 's|^capacity_file=.*|capacity_file=/sys/class/power_supply/bms/real_capacity|g' ${TMPDIR}/service.sh
     elif [[ -f /sys/class/power_supply/bms/capacity_raw ]]; then
-        ui_print "- 检测到/sys/class/power_supply/bms/capacity_raw文件存在，使用此文件作为真实电量文件"
+        ui_print " - 检测到/sys/class/power_supply/bms/capacity_raw文件存在，使用此文件作为真实电量文件"
         sed -i 's|^capacity_file=.*|capacity_file=/sys/class/power_supply/bms/capacity_raw|g' ${TMPDIR}/service.sh
     else
         ui_print " ！缺少必要文件，不支持此手机，安装失败！"
@@ -22,7 +22,7 @@ check_file()
         rm -rf ${MODPATH}
         exit 1
     fi
-    ui_print "- 必要文件存在，开始安装"
+    ui_print " - 必要文件存在，开始安装"
 }
 
 print_modname()
@@ -65,8 +65,8 @@ on_install()
     cp -af ${TMPDIR}/accurate_battery ${TMPDIR}/module.prop ${TMPDIR}/service.sh ${TMPDIR}/uninstall.sh ${MODPATH}
     [[ ! -d /data/adb/accurate_battery ]] && mkdir -p /data/adb/accurate_battery
     if [[ -f /data/adb/accurate_battery/no_trickle ]]; then
-        ui_print "- /data/adb/accurate_battery/no_trickle文件存在"
-        ui_print "- 不将涓流充电过程加入电量统计"
+        ui_print " - /data/adb/accurate_battery/no_trickle文件存在"
+        ui_print " - 不将涓流充电过程加入电量统计"
         ui_print " "
         ui_print " - 注意！此选项充到100%后仍会有充电电流！"
         ui_print " - 如想将涓流充电过程加入电量统计"
@@ -75,8 +75,8 @@ on_install()
         ui_print " ********************************************************"
         ui_print " "
     else
-        ui_print "- /data/adb/accurate_battery/no_trickle文件不存在"
-        ui_print "- 将涓流充电过程加入电量统计"
+        ui_print " - /data/adb/accurate_battery/no_trickle文件不存在"
+        ui_print " - 将涓流充电过程加入电量统计"
         ui_print " "
         ui_print " - 注意！由于此选项设计为涓流充电结束后才会变为100%"
         ui_print " - 所以99%-100%充电会极为缓慢！"

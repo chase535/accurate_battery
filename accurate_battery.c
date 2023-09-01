@@ -192,12 +192,12 @@ int main(int argc, char *argv[])
         read_file("/sys/class/power_supply/battery/current_now", current_char, sizeof(current_char));
         current = atoi(current_char);
         read_file("/sys/class/power_supply/battery/status", charge_status, sizeof(charge_status));
-        if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0 && no_trickle == 0)
+        if(access("/data/adb/accurate_battery/no_trickle", F_OK) == 0 && no_trickle != 1)
         {
             printf_with_time("/data/adb/accurate_battery/no_trickle文件存在，不将涓流充电过程加入电量统计");
             no_trickle=1;
         }
-        else if(access("/data/adb/accurate_battery/no_trickle", F_OK) != 0 && no_trickle == 1)
+        else if(access("/data/adb/accurate_battery/no_trickle", F_OK) != 0 && no_trickle != 0)
         {
             printf_with_time("/data/adb/accurate_battery/no_trickle文件不存在，将涓流充电过程加入电量统计");
             no_trickle=0;

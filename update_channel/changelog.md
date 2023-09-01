@@ -1,17 +1,3 @@
-# v25
-
-### Changelog
-
-1.优化代码
-
-2.重命名并更新安装脚本，以兼容使用KernelSU安装
-
-3.程序输出的文字添加时间
-
-4.开机完成后再运行程序，以确保时间准确
-
-5.新增模块运行日志，日志文件为/data/adb/accurate_battery/log.txt
-
 # v24
 
 ### Changelog

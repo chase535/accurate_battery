@@ -1,3 +1,9 @@
+# v27
+
+### Changelog
+
+修复充满电后CPU占用率高的bug
+
 # v26
 
 ### Changelog

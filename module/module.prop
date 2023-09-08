@@ -1,7 +1,7 @@
 id=accurate_battery
 name=精准电量
-version=v26
-versionCode=26
+version=v27
+versionCode=27
 author=酷安@诺鸡鸭
 description=精准电量，干掉虚假的UI电量。可通过创建或删除/data/adb/accurate_battery/no_trickle文件来更改是否将涓流充电过程加入电量统计，创建为不加入，删除为加入，更改实时生效，无需重启手机
 updateJson=https://gitee.com/chase535/accurate_battery/raw/main/update_channel/accurate_battery.json

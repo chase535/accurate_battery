@@ -212,6 +212,7 @@ int main(int argc, char *argv[])
             read_file(argv[1], battery, sizeof(battery));
             charge_full=atoi(battery);
             set_value("/sys/class/power_supply/battery/capacity", "100");
+            sleep(5);
             continue;
         }
         if(strcmp(argv[1], "/sys/class/power_supply/bms/real_capacity") == 0)

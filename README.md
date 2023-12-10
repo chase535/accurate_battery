@@ -2,7 +2,7 @@
 
 **开始上班，随缘更新**
 
-酷安：[诺鸡鸭](http://www.coolapk.com/u/1145497)
+酷安：[诺鸡鸭](https://www.coolapk.com/u/1145497)
 
 精准电量，干掉虚假的UI电量
 

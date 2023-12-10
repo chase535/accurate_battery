@@ -173,6 +173,9 @@ int main(int argc, char *argv[])
 {
     char battery[10],current_char[30],charge_status[25];
     int power=0,current=0,full=0,num=0,no_trickle=100,charge_full=0;
+    printf("作者：酷安@诺鸡鸭\n");
+    printf("GitHub开源地址：https://github.com/chase535/accurate_battery\n\n");
+    fflush(stdout);
     if(argc < 2)
     {
         printf_with_time("请传入真实电量文件路径！");
